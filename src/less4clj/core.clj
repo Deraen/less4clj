@@ -28,7 +28,7 @@
   (if url
     (case (.getProtocol url)
       "file"
-      [(.toURI url) (url-parent (str url)) :resource]
+      [(.toURI url) (url-parent (.getPath url)) :resource]
 
       "jar"
       (let [jar-url (.openConnection url)

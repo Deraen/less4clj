@@ -9,7 +9,10 @@
  a { color: @test;}")
 
 (def css
-"h1 {
+"span {
+  color: #123;
+}
+h1 {
   font-size: 12px;
 }
 a {
