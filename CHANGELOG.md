@@ -1,3 +1,7 @@
+## 0.3.3 (31.8.2015)
+
+- Add `:verbosity` option to `less-compile`
+
 ## 0.3.2 (16.8.2015)
 
 - Update less4j to 1.14.0
