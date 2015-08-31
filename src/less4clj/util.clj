@@ -5,6 +5,8 @@
 ;; from boot.util
 ;;
 
+(def ^:dynamic *verbosity* 1)
+
 ; Hack to detect boot verbosity
 (defn- get-verbosity []
   (try
@@ -12,7 +14,7 @@
     ; Deref var and atom
     @@(resolve 'boot.util/*verbosity*)
     (catch Exception _
-      1)))
+      *verbosity*)))
 
 (defn- print*
   [verbosity args]
