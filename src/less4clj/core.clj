@@ -124,21 +124,24 @@
   "Input can be:
    - File
    - String"
-  [input {:keys [source-map source-paths] :as options}]
-  (try
-    (let [ctx {:source-paths source-paths
-               :asset-map (webjars/asset-map)}
-          result (-> (DefaultLessCompiler.)
-                     (.compile
-                       (->less-source ctx input)
-                       (build-configuration options)))]
-      (doseq [warn (.getWarnings result)]
-        (util/warn "WARNING: %s\n" (.getMessage warn)))
-      {:output (.getCss result)
-       :source-map (if source-map (.getSourceMap result))})
-    (catch Less4jException e
-      (util/fail (.getMessage e))
-      {:error e})))
+  [input {:keys [source-map source-paths verbosity]
+          :or {verbosity 1}
+          :as options}]
+  (binding [util/*verbosity* verbosity]
+    (try
+      (let [ctx {:source-paths source-paths
+                 :asset-map (webjars/asset-map)}
+            result (-> (DefaultLessCompiler.)
+                       (.compile
+                         (->less-source ctx input)
+                         (build-configuration options)))]
+        (doseq [warn (.getWarnings result)]
+          (util/warn "WARNING: %s\n" (.getMessage warn)))
+        {:output (.getCss result)
+         :source-map (if source-map (.getSourceMap result))})
+      (catch Less4jException e
+        (util/fail (.getMessage e))
+        {:error e}))))
 
 (defn less-compile-to-file [path target-dir relative-path options]
   (let [input-file (io/file path)
