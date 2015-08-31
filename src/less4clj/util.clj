@@ -7,18 +7,9 @@
 
 (def ^:dynamic *verbosity* 1)
 
-; Hack to detect boot verbosity
-(defn- get-verbosity []
-  (try
-    (require 'boot.util)
-    ; Deref var and atom
-    @@(resolve 'boot.util/*verbosity*)
-    (catch Exception _
-      *verbosity*)))
-
 (defn- print*
   [verbosity args]
-  (when (>= (get-verbosity) verbosity)
+  (when (>= *verbosity* verbosity)
     (binding [*out* *err*]
       (apply printf args) (flush))))
 
