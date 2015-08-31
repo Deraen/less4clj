@@ -21,8 +21,8 @@
   (let [[_ x] (re-find #"(.*)/([^/]*)$" url)]
     x))
 
-(defn- join-url [& parts]
-  (string/join "/" parts))
+(defn join-url [a b]
+  (str (.resolve (URI. (if (.endsWith a "/") a (str a "/"))) (URI. b))))
 
 (defn find-resource [url]
   (if url
