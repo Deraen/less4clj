@@ -89,7 +89,7 @@
   [ctx source]
   (proxy [LessSource] []
     (relativeSource ^LessSource [^String import-filename]
-      (util/dbug "importing %s at inline less\n")
+      (util/dbug "importing %s at inline less\n" import-filename)
       (if-let [[uri parent type]
                (or (some #(find-local-file import-filename %) (:source-paths ctx))
                    (find-resource (io/resource import-filename))
