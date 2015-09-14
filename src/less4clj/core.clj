@@ -63,7 +63,7 @@
       (util/dbug "importing %s at %s\n" import-filename parent)
       (if-let [[uri parent type]
                (or (find-local-file import-filename parent)
-                                        ; Don't search from other source-paths if looking for import from resource
+                  ;; Don't search from other source-paths if looking for import from resource
                   (and (= type :file) (some #(find-local-file import-filename %) (:source-paths ctx)))
                   (find-resource (io/resource import-filename))
                   (find-resource (io/resource (join-url parent import-filename)))
