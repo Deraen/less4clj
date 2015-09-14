@@ -7,6 +7,7 @@
   (:import
     [java.io IOException File]
     [java.net JarURLConnection URL URI]
+    [com.github.sommeri.less4j_javascript Less4jJavascript]
     [com.github.sommeri.less4j
      LessCompiler LessCompiler$Configuration Less4jException
      LessSource LessSource$FileNotFound LessSource$CannotReadFile LessSource$StringSourceException]
@@ -102,9 +103,11 @@
       (.getBytes source))))
 
 (defn- build-configuration ^LessCompiler$Configuration
-  [{:keys [source-map compression]}]
+  [{:keys [source-map compression inline-javascript]}]
   (let [config (LessCompiler$Configuration.)
         source-map-config (.getSourceMapConfiguration config)]
+    (when (boolean inline-javascript)
+      (Less4jJavascript/configure config))
     (doto config
       (.setCompressing (boolean compression)))
     (doto source-map-config

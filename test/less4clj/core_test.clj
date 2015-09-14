@@ -33,3 +33,25 @@ a {
 (deftest join-url-test
   (is (= "a/b/c.less" (join-url "a/b" "c.less")))
   (is (= "a/d.less" (join-url "a/b/c" "../../d.less"))))
+
+
+(def less-with-js
+  "@number: 100;
+   @content: \"less symbol is < and more symbol is >\";
+  .logaritmic-thing {
+    // escaped JavaScript - calculate logarithm
+    margin: ~`Math.round(Math.log(@{number})*100)/100`;
+    // embedded JavaScript - escape < and > characters
+    content: `@{content}.replace(/</g, '&lt;').replace(/>/g, '&gt;')`;
+  }
+  ")
+
+(def css-with-js
+  ".logaritmic-thing {\n  margin: 4.61;\n  content: \"less symbol is &lt; and more symbol is &gt;\";\n}\n")
+
+(def test-file-with-js (File/createTempFile "less4clj" "test-js.less"))
+(spit test-file-with-js less-with-js)
+
+(deftest less-compile-test-with-js
+  (is (= {:output css-with-js :source-map nil} (less-compile test-file-with-js {:inline-javascript true})))
+  (is (= {:output css-with-js :source-map nil} (less-compile less-with-js {:inline-javascript true}))))
