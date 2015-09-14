@@ -1,16 +1,17 @@
 (ns less4clj.core
   (:require
-    [clojure.java.io :as io]
-    [clojure.string :as string]
-    [less4clj.util :as util]
-    [less4clj.webjars :as webjars])
+   [clojure.java.io :as io]
+   [clojure.string :as string]
+   [less4clj.util :as util]
+   [less4clj.webjars :as webjars])
   (:import
-    [java.io IOException File]
-    [java.net JarURLConnection URL URI]
-    [com.github.sommeri.less4j
-     LessCompiler LessCompiler$Configuration Less4jException
-     LessSource LessSource$FileNotFound LessSource$CannotReadFile LessSource$StringSourceException]
-    [com.github.sommeri.less4j.core DefaultLessCompiler]))
+   [java.io IOException File]
+   [java.net JarURLConnection URL URI]
+   [com.github.sommeri.less4j_javascript Less4jJavascript]
+   [com.github.sommeri.less4j
+    LessCompiler LessCompiler$Configuration Less4jException
+    LessSource LessSource$FileNotFound LessSource$CannotReadFile LessSource$StringSourceException]
+   [com.github.sommeri.less4j.core DefaultLessCompiler]))
 
 (defn find-local-file [file current-dir]
   (let [f (io/file current-dir file)]
@@ -62,11 +63,11 @@
       (util/dbug "importing %s at %s\n" import-filename parent)
       (if-let [[uri parent type]
                (or (find-local-file import-filename parent)
-                   ; Don't search from other source-paths if looking for import from resource
-                   (and (= type :file) (some #(find-local-file import-filename %) (:source-paths ctx)))
-                   (find-resource (io/resource import-filename))
-                   (find-resource (io/resource (join-url parent import-filename)))
-                   (find-webjars ctx import-filename))]
+                                        ; Don't search from other source-paths if looking for import from resource
+                  (and (= type :file) (some #(find-local-file import-filename %) (:source-paths ctx)))
+                  (find-resource (io/resource import-filename))
+                  (find-resource (io/resource (join-url parent import-filename)))
+                  (find-webjars ctx import-filename))]
         (custom-less-source ctx type uri parent)
         (not-found!)))
     (getContent ^String []
@@ -102,9 +103,12 @@
       (.getBytes source))))
 
 (defn- build-configuration ^LessCompiler$Configuration
-  [{:keys [source-map compression]}]
+  [{:keys [source-map compression inline-javascript]}]
   (let [config (LessCompiler$Configuration.)
         source-map-config (.getSourceMapConfiguration config)]
+    (when (boolean inline-javascript)
+      (print "setting inline javascript" inline-javascript)
+      (com.github.sommeri.less4j_javascript.Less4jJavascript/configure config))
     (doto config
       (.setCompressing (boolean compression)))
     (doto source-map-config
@@ -124,7 +128,7 @@
   "Input can be:
    - File
    - String"
-  [input {:keys [source-map source-paths verbosity]
+  [input {:keys [source-map source-paths inline-javascript verbosity]
           :or {verbosity 1}
           :as options}]
   (binding [util/*verbosity* verbosity]
@@ -132,9 +136,9 @@
       (let [ctx {:source-paths source-paths
                  :asset-map (webjars/asset-map)}
             result (-> (DefaultLessCompiler.)
-                       (.compile
-                         (->less-source ctx input)
-                         (build-configuration options)))]
+                      (.compile
+                       (->less-source ctx input)
+                       (build-configuration options)))]
         (doseq [warn (.getWarnings result)]
           (util/warn "WARNING: %s\n" (.getMessage warn)))
         {:output (.getCss result)
