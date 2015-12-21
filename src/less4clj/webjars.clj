@@ -12,20 +12,17 @@
 (defn list-assets [classloader]
   (->> (.getResources classloader WEBJARS_PATH_PREFIX)
        enumeration-seq
-       (reduce
-         (fn [assets url]
-           (concat
-             assets
-             (case (.getProtocol url)
-               "jar"
-               (let [[_ jar] (re-find #"^file:(.*\.jar)\!/.*$" (.getPath url))]
-                 (->> (enumeration-seq (.entries (JarFile. (io/file jar))))
-                      (remove #(.isDirectory %))
-                      (map #(.getName %))
-                      (filter #(.startsWith % WEBJARS_PATH_PREFIX))))
+       (mapcat
+         (fn [url]
+           (case (.getProtocol url)
+             "jar"
+             (let [[_ jar] (re-find #"^file:(.*\.jar)\!/.*$" (.getPath url))]
+               (->> (enumeration-seq (.entries (JarFile. (io/file jar))))
+                    (remove #(.isDirectory %))
+                    (map #(.getName %))
+                    (filter #(.startsWith % WEBJARS_PATH_PREFIX))))
 
-               (util/dbug "Skipping url: %s\n" url))))
-         [])
+             (util/dbug "Skipping url: %s\n" url))))
        set))
 
 (def ^:private webjars-pattern
