@@ -1,6 +1,7 @@
 (ns less4clj.webjars
   (:require [clojure.string :as string]
-            [clojure.java.io :as io])
+            [clojure.java.io :as io]
+            [less4clj.util :as util])
   (:import [java.io IOException File]
            [java.lang ClassLoader]
            [java.util ServiceLoader]
@@ -15,14 +16,15 @@
          (fn [assets url]
            (concat
              assets
-             (cond
-               (= "jar" (.getProtocol url))
+             (case (.getProtocol url)
+               "jar"
                (let [[_ jar] (re-find #"^file:(.*\.jar)\!/.*$" (.getPath url))]
                  (->> (enumeration-seq (.entries (JarFile. (io/file jar))))
                       (remove #(.isDirectory %))
                       (map #(.getName %))
                       (filter #(.startsWith % WEBJARS_PATH_PREFIX))))
-               :else (throw (Exception. (str "less4clj.webjars doesn't know how to handle \"" (.getProtocol url) "\" urls"))))))
+
+               (util/dbug "Skipping url: %s\n" url))))
          [])
        set))
 
