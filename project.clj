@@ -6,13 +6,13 @@
             :distribution :repo
             :comments "same as Clojure"}
   :dependencies [[org.clojure/clojure "1.7.0" :scope "provided"]
-                 [com.github.sommeri/less4j "1.14.0"]
+                 [com.github.sommeri/less4j "1.15.4"]
                  [com.github.sommeri/less4j-javascript "0.0.1" :exclusions [com.github.sommeri/less4j]]
-                 [org.webjars/webjars-locator "0.19"]
-                 [org.slf4j/slf4j-nop "1.7.7"]
+                 [org.webjars/webjars-locator "0.29"]
+                 [org.slf4j/slf4j-nop "1.7.13"]
 
                  ;; For testing the webjars asset locator implementation
-                 [org.webjars/bootstrap "3.3.2" :scope "test"]]
+                 [org.webjars/bootstrap "3.3.6" :scope "test"]]
   :profiles {:dev {:resource-paths ["test-resources"]}
              :1.8 {:dependencies [[org.clojure/clojure "1.8.0-RC4"]]}
              :1.6 {:dependencies [[org.clojure/clojure "1.6.0"]]}}
