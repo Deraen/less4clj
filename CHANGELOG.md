@@ -1,4 +1,4 @@
-## Unreleased
+## 0.4.0 (23.12.2015)
 
 - Updated less4j to 1.15.4
 - Uses [webjars-locator](https://github.com/webjars/webjars-locator) for
