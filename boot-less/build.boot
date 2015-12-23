@@ -4,7 +4,7 @@
                     [boot/core           "2.5.2"       :scope "provided"]
                     [deraen/less4clj     "0.4.0"       :scope "test"]])
 
-(def +version+ "0.4.4")
+(def +version+ "0.5.0-SNAPSHOT")
 
 (task-options!
   pom {:project     'deraen/boot-less

@@ -7,7 +7,7 @@
    [boot.util       :as util]))
 
 (def ^:private deps
-  '[[deraen/less4clj "0.4.1"]])
+  '[[deraen/less4clj "0.5.0-SNAPSHOT"]])
 
 (defn- find-mainfiles [fs]
   (->> fs
@@ -15,10 +15,16 @@
        (core/by-ext [".main.less"])))
 
 (core/deftask less
-  "Compile Less code."
-  [s source-map  bool "Create source-map for compiled CSS."
-   c compression bool "Compress compiled CSS using simple compression."
-   i inline-javascript bool "Enable inline Javascript plugin"]
+  "Compile Less code
+
+  For each `.main.less` file in the fileset creates equivalent `.css` file.
+  For example to create file `public/css/style.css` your less code should be
+  at path `public/css/style.main.less`.
+
+  If you are seeing SLF4J warnings, check https://github.com/Deraen/less4clj#log-configuration"
+  [s source-map  bool "Enable source-maps for compiled CSS."
+   c compression bool "Enable compression compiled CSS using simple compression."
+   i inline-javascript bool "Enable inline Javascript plugin."]
   (let [output-dir  (core/tmp-dir!)
         p           (-> (core/get-env)
                         (update-in [:dependencies] into deps)

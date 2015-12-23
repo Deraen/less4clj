@@ -1,23 +1,23 @@
 (ns leiningen.less4j
-  (:require
-    [leiningen.help]
-    [leiningen.core.eval :as leval]
-    [leiningen.core.project :as project]
-    [clojure.java.io :as io]))
+  (:require [leiningen.help]
+            [leiningen.core.eval :as leval]
+            [leiningen.core.project :as project]
+            [leiningen.core.main :as main]
+            [leiningen.help :as help]
+            [clojure.java.io :as io]))
 
 (defn main-file? [file]
   (.endsWith (.getName file) ".main.less"))
 
 (defn find-main-files [source-paths]
-  (->> source-paths
-       (map (fn [source-path]
-              (let [file (io/file source-path)]
-                (->> (file-seq file)
-                     (filter main-file?)
-                     (map (fn [x] [(.getPath x) (.toString (.relativize (.toURI file) (.toURI x)))]))))))
-       (apply concat)))
+  (mapcat (fn [source-path]
+            (let [file (io/file source-path)]
+              (->> (file-seq file)
+                   (filter main-file?)
+                   (map (fn [x] [(.getPath x) (.toString (.relativize (.toURI file) (.toURI x)))])))))
+          source-paths))
 
-(def less4j-profile {:dependencies '[[deraen/less4clj "0.4.1"]
+(def less4j-profile {:dependencies '[[deraen/less4clj "0.5.0-SNAPSHOT"]
                                      [watchtower "0.1.1"]]})
 
 ; From lein-cljsbuild
@@ -39,11 +39,8 @@
 (defn- run-compiler
   "Run the lesscss compiler."
   [project
-   {:keys [source-paths target-path source-map compression verbosity inline-javascript]
-    :or {source-map false
-         compression false
-         inline-javascript false
-         verbosity 1}}
+   {:keys [source-paths target-path]
+    :as options}
    watch?]
   (let [project' (project/merge-profiles project [less4j-profile])
         main-files (vec (find-main-files source-paths))]
@@ -56,11 +53,7 @@
                       path#
                       ~(.getPath (io/file target-path))
                       relative-path#
-                      {:source-map ~source-map
-                       :compression ~compression
-                       :source-paths ~source-paths
-                       :inline-javascript ~inline-javascript
-                       :verbosity ~verbosity})))]
+                      ~(dissoc options :target-path :source-paths))))]
          (if ~watch?
            @(watchtower.core/watcher
              ~source-paths
@@ -71,25 +64,44 @@
            (f#)))
       '(require 'less4clj.core 'watchtower.core))))
 
+;; For docstrings
+
 (defn- once
   "Compile less files once."
-  [project config]
-  (run-compiler project config false))
+  [project]
+  nil)
 
 (defn- auto
   "Compile less files, then watch for changes and recompile until interrupted."
-  [project config]
-  (run-compiler project config true))
+  [project]
+  nil)
 
 (defn less4j
-  "Run the {less} css compiler plugin."
+  "Run the {less} css compiler plugin.
+
+Options should be provided using `:less` key in project map.
+
+Available options:
+:target-path          The path where CSS files are written to.
+:source-paths         Collection of paths where LESS files are read from.
+:source-map           Enable source-maps for compiled CSS.
+:compression          Enable compression for compiled CSS using simple compression.
+:inline-javascript    Enable inline Javascript plugin.
+:verbosity            Set verbosity level, valid values are 1 and 2.
+
+Command arguments:
+Add `:debug` as subtask argument to enable debugging output."
   {:help-arglists '([once auto])
    :subtasks      [#'once #'auto]}
   ([project]
-   (println (leiningen.help/help-for "less4j"))
-   (leiningen.core.main/abort))
+   (println (help/help-for "less4j"))
+   (main/abort))
   ([project subtask & args]
-   (let [config (:less project)]
+   (let [args (set args)
+         config (cond-> (:less project)
+                  (contains? args ":debug") (assoc :verbosity 2))]
      (case subtask
-       "once" (apply once project config args)
-       "auto" (apply auto project config args)))))
+       "once" (run-compiler project config false)
+       "auto" (run-compiler project config true)
+       "help" (println (help/help-for "less4j"))
+       (main/warn "Unknown task.")))))
