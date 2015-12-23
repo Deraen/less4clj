@@ -26,15 +26,14 @@ For parallel Sass library check [sass4clj](https://github.com/Deraen/sass4clj)
 ## Features
 
 - Load imports from classpath
-  - Loading order. `@import "{name}";` at `{path}`.
-    1. check if file `{path}/{name}.less` exists
-    2. try `(io/resource "{name}.less")`
-    3. try `(io/resource "{path}/{name}.less")`
-    4. check if webjars asset map contains `{name}`
+  - Loading order for `@import "{name}";` on file at `{path}`
+    1. Local file at `{path}/{name}.less`
+    2. Classpath resource `(io/resource "{name}.less")`
+    3. Classpath resource `(io/resource "{path}/{name}.less")`
+    4. Webjar asset
       - Resource `META-INF/resources/webjars/{package}/{version}/{path}` can be referred using `{package}/{path}`
-      - E.g. `bootstrap/less/bootstrap.less` => `META-INF/resources/webjars/bootstrap/3.3.1/less/bootstrap.less`
-  - You should be able to depend on `[org.webjars/bootstrap "3.3.1"]`
-    and use `@import "bootstrap/less/bootstrap";`
+      - For example `@import "bootstrap/less/bootstrap.less";` will import  `META-INF/resources/webjars/bootstrap/3.3.6/less/bootstrap.less`
+- **TIP:** Add dependency `[org.webjars.bower/bootstrap "3.3.6"]` to use [Bootstrap](http://getbootstrap.com/)
 
 ## FAQ
 
