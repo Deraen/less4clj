@@ -7,7 +7,7 @@
 [![Clojars Project](http://clojars.org/deraen/lein-less4j/latest-version.svg)](http://clojars.org/deraen/lein-less4j)
 
 Clojure wrapper for [Less4j](https://github.com/SomMeri/less4j) Java implementation of Less compiler.
-This repository also contains [boot](http://boot-clj.com/) and [Leiningen](http://leiningen.org/) tasks.
+This repository also contains [Boot](http://boot-clj.com/) and [Leiningen](http://leiningen.org/) tasks.
 
 For parallel Sass library check [sass4clj](https://github.com/Deraen/sass4clj)
 
@@ -22,14 +22,6 @@ For parallel Sass library check [sass4clj](https://github.com/Deraen/sass4clj)
 * Provides the `less4j` task
 * For each `.main.less` file in source-dirs creates equivalent `.css` file.
 * Check `lein help less4j` for options.
-
-Task options:
-```clj
-:less {:source-paths ["src/less"]
-       :target-path "target/generated/public/css"
-       :source-map true
-       :compression true}
-```
 
 ## Features
 
