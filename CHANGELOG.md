@@ -1,3 +1,11 @@
+## Unreleased
+
+- Updated less4j to 1.15.4
+- Uses [webjars-locator](https://github.com/webjars/webjars-locator) for
+finding Webjar assets
+- Added support for inline javascript through [less4j-javascript](https://github.com/SomMeri/less4j-javascript)
+    - Enable using `:inline-javascript` option
+
 ## 0.3.3 (31.8.2015)
 
 - Add `:verbosity` option to `less-compile`
