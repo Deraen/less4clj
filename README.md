@@ -3,13 +3,49 @@
 [![Clojars Project](http://clojars.org/deraen/less4clj/latest-version.svg)](http://clojars.org/deraen/less4clj)
 
 Clojure wrapper for [Less4j](https://github.com/SomMeri/less4j) Java implementation of Less compiler
+In addition to the wrapper library, this repository contains
+[boot](http://boot-clj.com/) and [Leiningen](http://leiningen.org/) tasks.
 
 - For parallel Sass library check [sass4clj](https://github.com/Deraen/sass4clj)
 
-## Usage
+## Boot
 
-Check [boot-less](https://github.com/Deraen/boot-less) and
-[lein-less4j](https://github.com/Deraen/lein-less4j).
+[![Clojars Project](http://clojars.org/deraen/boot-less/latest-version.svg)](http://clojars.org/deraen/boot-less)
+
+* Provides the `less` task
+* For each `.main.less` in the fileset creates equivalent `.css` file.
+
+### Usage
+
+```clj
+; Import the task in your build.boot
+(require '[deraen.boot-less :refer [less]])
+
+(deftask dev []
+  (comp
+   ...
+   (less)))
+```
+
+To create css file `public/css/main.css` have the less file on path `public/css/main.main.less` or use sift task to move the css file:
+`(comp (less) (sift :move {#"main.css" "public/css/main.css"}))`
+
+## Leiningen
+
+[![Clojars Project](http://clojars.org/deraen/lein-less4j/latest-version.svg)](http://clojars.org/deraen/lein-less4j)
+
+* Provides the `less4j` task
+* For each `.main.less` in source-dirs creates equivalent `.css` file.
+
+### Usage
+
+Task options
+```clj
+:less {:source-paths ["src/less"]
+       :target-path "target/generated/public/css"
+       :source-map true
+       :compression true}
+```
 
 ## Features
 
@@ -28,7 +64,24 @@ Check [boot-less](https://github.com/Deraen/boot-less) and
 
 ### Log configuration
 
-If you are using some logging stuff it might be that library used by
+If you don't have any slf4j implementations you will see a warning:
+
+```
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+```
+
+To disable this add a no operation logger to your project. As this is only required
+on build phase, you can use `:scope "test"` so that the dependency is not
+transitive and is not included in uberjar. Alternatively you can add this
+dependency to your Leiningen dev profile.
+
+```
+[org.slf4j/slf4j-nop "1.7.13" :scope "test"]
+```
+
+If you are using slf4j logging it might be that a library used by
 less4j will write lots of stuff to your log, then you should add the following
 rule to your `logback.xml`:
 
