@@ -2,6 +2,10 @@
 
 [![Clojars Project](http://clojars.org/deraen/less4clj/latest-version.svg)](http://clojars.org/deraen/less4clj)
 
+[![Clojars Project](http://clojars.org/deraen/boot-less/latest-version.svg)](http://clojars.org/deraen/boot-less)
+
+[![Clojars Project](http://clojars.org/deraen/lein-less4j/latest-version.svg)](http://clojars.org/deraen/lein-less4j)
+
 Clojure wrapper for [Less4j](https://github.com/SomMeri/less4j) Java implementation of Less compiler
 In addition to the wrapper library, this repository contains
 [boot](http://boot-clj.com/) and [Leiningen](http://leiningen.org/) tasks.
@@ -10,36 +14,16 @@ In addition to the wrapper library, this repository contains
 
 ## Boot
 
-[![Clojars Project](http://clojars.org/deraen/boot-less/latest-version.svg)](http://clojars.org/deraen/boot-less)
-
-* Provides the `less` task
+* Provides the `less` task (`deraen.boot-less/less`)
 * For each `.main.less` in the fileset creates equivalent `.css` file.
-
-### Usage
-
-```clj
-; Import the task in your build.boot
-(require '[deraen.boot-less :refer [less]])
-
-(deftask dev []
-  (comp
-   ...
-   (less)))
-```
-
-To create css file `public/css/main.css` have the less file on path `public/css/main.main.less` or use sift task to move the css file:
-`(comp (less) (sift :move {#"main.css" "public/css/main.css"}))`
+* Check `boot less --help` for task options
 
 ## Leiningen
-
-[![Clojars Project](http://clojars.org/deraen/lein-less4j/latest-version.svg)](http://clojars.org/deraen/lein-less4j)
 
 * Provides the `less4j` task
 * For each `.main.less` in source-dirs creates equivalent `.css` file.
 
-### Usage
-
-Task options
+Task options:
 ```clj
 :less {:source-paths ["src/less"]
        :target-path "target/generated/public/css"
