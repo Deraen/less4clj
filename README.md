@@ -4,6 +4,8 @@
 
 Clojure wrapper for [Less4j](https://github.com/SomMeri/less4j) Java implementation of Less compiler
 
+- For parallel Sass library check [sass4clj](https://github.com/Deraen/sass4clj)
+
 ## Usage
 
 Check [boot-less](https://github.com/Deraen/boot-less) and
