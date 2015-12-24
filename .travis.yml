@@ -2,6 +2,8 @@ sudo: false
 language: clojure
 script: ./test.sh
 install:
+  - mkdir ~/bin
+  - export PATH=~/bin:$PATH
   - curl -L https://github.com/boot-clj/boot-bin/releases/download/latest/boot.sh -o ~/bin/boot
   - chmod +x ~/bin/boot
 jdk:
@@ -11,3 +13,4 @@ cache:
   directories:
   - $HOME/.m2
   - $HOME/.boot/cache
+  - $HOME/bin
