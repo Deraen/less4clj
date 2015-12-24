@@ -1,3 +1,7 @@
+## Unreleased
+
+- Synchronized versions between all packages
+
 ## 0.4.1 (23.12.2015)
 
 - Drop dependency on slf4j no-op implementation
