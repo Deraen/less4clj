@@ -20,8 +20,8 @@
 
 (task-options!
   pom {:version     +version+
-       :url         "https://github.com/deraen/boot-less"
-       :scm         {:url "https://github.com/deraen/boot-less"}
+       :url         "https://github.com/deraen/less4clj"
+       :scm         {:url "https://github.com/deraen/less4clj"}
        :license     {"Eclipse Public License" "http://www.eclipse.org/legal/epl-v10.html"}})
 
 (defn with-files
@@ -60,7 +60,8 @@
     (fn [x] (re-find #"less4clj" (tmp-path x)))
     (comp
      (pom
-      :project 'deraen/less4clj)
+      :project 'deraen/less4clj
+      :description "Clojure wrapper for Less4j.")
      (jar)
      (install)))
 
