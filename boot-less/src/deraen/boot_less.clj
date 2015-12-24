@@ -15,7 +15,7 @@
        (core/by-ext [".main.less"])))
 
 (core/deftask less
-  "Compile Less code
+  "{less} CSS compiler.
 
   For each `.main.less` file in the fileset creates equivalent `.css` file.
   For example to create file `public/css/style.css` your less code should be

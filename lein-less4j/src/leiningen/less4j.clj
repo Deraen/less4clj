@@ -77,7 +77,13 @@
   nil)
 
 (defn less4j
-  "Run the {less} css compiler plugin.
+  "{less} CSS compiler.
+
+For each `.main.less` file in source-paths creates equivalent `.css` file.
+For example to create file `{target-path}/public/css/style.css` your less
+code should be at path `{source-path}/public/css/style.main.less`.
+
+If you are seeing SLF4J warnings, check https://github.com/Deraen/less4clj#log-configuration
 
 Options should be provided using `:less` key in project map.
 
