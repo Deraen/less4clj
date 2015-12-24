@@ -1,6 +1,7 @@
-## Unreleased
+## 0.5.0 (24.12.2015)
 
 - Synchronized versions between all packages
+- Boot and Lein packages are now maintained in less4clj repository
 
 ## 0.4.1 (23.12.2015)
 
