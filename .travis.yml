@@ -1,10 +1,13 @@
 sudo: false
 language: clojure
-lein: lein2
-script: lein2 do clean, all test, all check
+script: ./test.sh
+before_script:
+  - curl -L https://github.com/boot-clj/boot-bin/releases/download/latest/boot.sh -o ~/bin/boot
+  - chmod +x ~/bin/boot
 jdk:
   - openjdk7
   - oraclejdk8
 cache:
   directories:
   - $HOME/.m2
+  - $HOME/.boot/cache

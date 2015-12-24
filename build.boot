@@ -2,8 +2,12 @@
 
 (set-env!
   :resource-paths #{"src" "boot-less/src" "lein-less4j/src"}
+  :source-paths #{"test" "test-resources"}
   :dependencies   '[[org.clojure/clojure "1.7.0" :scope "provided"]
                     [boot/core "2.5.2" :scope "provided"]
+                    [adzerk/boot-test "1.0.7" :scope "test"]
+                    ;; Webjars-locator uses logging
+                    [org.slf4j/slf4j-nop "1.7.12" :scope "test"]
 
                     [com.github.sommeri/less4j "1.15.4"]
                     [com.github.sommeri/less4j-javascript "0.0.1" :exclusions [com.github.sommeri/less4j]]
@@ -11,6 +15,8 @@
 
                     ;; For testing the webjars asset locator implementation
                     [org.webjars/bootstrap "3.3.6" :scope "test"]])
+
+(require '[adzerk.boot-test :refer [test]])
 
 (task-options!
   pom {:version     +version+
@@ -24,7 +30,7 @@
   (fn [next-handler]
     (fn [fileset]
       (let [merge-fileset-handler (fn [fileset']
-                                    (next-handler (commit! (update fileset :tree merge (:tree fileset')))))
+                                    (next-handler (commit! (assoc fileset :tree (merge (:tree fileset) (:tree fileset'))))))
             handler (middleware merge-fileset-handler)
             fileset (assoc fileset :tree (reduce-kv
                                           (fn [tree path x]
@@ -75,3 +81,7 @@
   (comp
    (build)
    (push :repo "clojars" :gpg-sign (not (.endsWith +version+ "-SNAPSHOT")))))
+
+(deftask run-tests []
+  (comp
+   (test :namespaces #{'less4clj.core-test 'less4clj.webjars-test})))
