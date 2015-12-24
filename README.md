@@ -56,14 +56,6 @@ dependency to your Leiningen dev profile.
 [org.slf4j/slf4j-nop "1.7.13" :scope "test"]
 ```
 
-If you are using slf4j logging it might be that a library used by
-less4j will write lots of stuff to your log, then you should add the following
-rule to your `logback.xml`:
-
-```xml
-  <logger name="org.apache.commons.beanutils.converters" level="INFO"/>
-```
-
 ## License
 
 Copyright © 2014-2015 Juho Teperi
