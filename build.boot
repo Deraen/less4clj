@@ -50,7 +50,6 @@
                                             (clojure.string/replace #"\." "/")
                                             (clojure.string/replace #"-" "_")
                                             (str ".clj")))]
-          (println f)
           (clojure.java.io/make-parents f)
           (spit f (format "(ns %s)\n\n(def +version+ \"%s\")" (name namespace) +version+)))
         (next-handler (-> fileset (add-resource d) commit!))))))
