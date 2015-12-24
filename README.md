@@ -1,15 +1,18 @@
 # Less4clj [![Build Status](https://travis-ci.org/Deraen/less4clj.svg?branch=master)](https://travis-ci.org/Deraen/less4clj)
 
-[![Clojars Project](http://clojars.org/deraen/less4clj/latest-version.svg)](http://clojars.org/deraen/less4clj)
-
-[![Clojars Project](http://clojars.org/deraen/boot-less/latest-version.svg)](http://clojars.org/deraen/boot-less)
-
+[![Clojars Project](http://clojars.org/deraen/less4clj/latest-version.svg)](http://clojars.org/deraen/less4clj)<br>
+[![Clojars Project](http://clojars.org/deraen/boot-less/latest-version.svg)](http://clojars.org/deraen/boot-less)<br>
 [![Clojars Project](http://clojars.org/deraen/lein-less4j/latest-version.svg)](http://clojars.org/deraen/lein-less4j)
 
 Clojure wrapper for [Less4j](https://github.com/SomMeri/less4j) Java implementation of Less compiler.
 This repository also contains [Boot](http://boot-clj.com/) and [Leiningen](http://leiningen.org/) tasks.
 
 For parallel Sass library check [sass4clj](https://github.com/Deraen/sass4clj)
+
+## Features
+
+- Load imports directly from Java classpath (e.g. Webjars)
+    - Add dependency `[org.webjars.bower/bootstrap "3.3.6"]` to use [Bootstrap](http://getbootstrap.com/)
 
 ## Boot
 
@@ -23,17 +26,16 @@ For parallel Sass library check [sass4clj](https://github.com/Deraen/sass4clj)
 * For each `.main.less` file in source-dirs creates equivalent `.css` file.
 * Check `lein help less4j` for options.
 
-## Features
+## Import load order
 
-- Load imports from classpath
-  - Loading order for `@import "{name}";` on file at `{path}`
-    1. Local file at `{path}/{name}.less`
-    2. Classpath resource `(io/resource "{name}.less")`
-    3. Classpath resource `(io/resource "{path}/{name}.less")`
-    4. Webjar asset
-      - Resource `META-INF/resources/webjars/{package}/{version}/{path}` can be referred using `{package}/{path}`
-      - For example `@import "bootstrap/less/bootstrap.less";` will import  `META-INF/resources/webjars/bootstrap/3.3.6/less/bootstrap.less`
-- **TIP:** Add dependency `[org.webjars.bower/bootstrap "3.3.6"]` to use [Bootstrap](http://getbootstrap.com/)
+Loading order for `@import "{name}";` on file at `{path}`
+
+1. Local file at `{path}/{name}.less`
+2. Classpath resource `(io/resource "{name}.less")`
+3. Classpath resource `(io/resource "{path}/{name}.less")`
+4. Webjar asset
+    - Resource `META-INF/resources/webjars/{package}/{version}/{path}` can be referred using `{package}/{path}`
+    - For example `@import "bootstrap/less/bootstrap.less";` will import  `META-INF/resources/webjars/bootstrap/3.3.6/less/bootstrap.less`
 
 ## FAQ
 
