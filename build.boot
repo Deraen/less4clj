@@ -38,7 +38,7 @@
 (deftask build []
   (comp
    (with-files
-    (fn [x] (re-find #"less4clj" (:path x)))
+    (fn [x] (re-find #"less4clj" (tmp-path x)))
     (comp
      (pom
       :project 'deraen/less4clj)
@@ -46,7 +46,7 @@
      (install)))
 
    (with-files
-    (fn [x] (re-find #"boot[-_]less" (:path x)))
+    (fn [x] (re-find #"boot[-_]less" (tmp-path x)))
     (comp
      (pom
       :project 'deraen/boot-less
@@ -56,7 +56,7 @@
      (install)))
 
    (with-files
-    (fn [x] (re-find #"less4j" (:path x)))
+    (fn [x] (re-find #"less4j" (tmp-path x)))
     (comp
      (pom
       :project 'deraen/lein-less4j
