@@ -37,34 +37,33 @@
 
 (deftask build []
   (comp
-   (pom
-    :project 'deraen/less4clj)
-   (with-files (fn [x]
-                 (re-find #"less4clj" (:path x)))
-               (comp
-                (jar
-                 :file (format "less4clj-%s.jar" +version+))
-                (install)))
+   (with-files
+    (fn [x] (re-find #"less4clj" (:path x)))
+    (comp
+     (pom
+      :project 'deraen/less4clj)
+     (jar)
+     (install)))
 
-   (pom
-    :project 'deraen/boot-less
-    :description "Boot task to compile Less code to Css. Uses Less4j Java implementation of Less compiler."
-    :dependencies [])
-   (with-files (fn [x] (re-find #"boot[-_]less" (:path x)))
-               (comp
-                (jar
-                 :file (format "boot-less-%s.jar" +version+))
-                (install)))
+   (with-files
+    (fn [x] (re-find #"boot[-_]less" (:path x)))
+    (comp
+     (pom
+      :project 'deraen/boot-less
+      :description "Boot task to compile Less code to Css. Uses Less4j Java implementation of Less compiler."
+      :dependencies [])
+     (jar)
+     (install)))
 
-   (pom
-    :project 'deraen/lein-less4j
-    :description "Leinigen task for Less4j"
-    :dependencies [])
-   (with-files (fn [x] (re-find #"less4j" (:path x)))
-               (comp
-                (jar
-                 :file (format "lein-less4j-%s.jar" +version+))
-                (install)))))
+   (with-files
+    (fn [x] (re-find #"less4j" (:path x)))
+    (comp
+     (pom
+      :project 'deraen/lein-less4j
+      :description "Leinigen task for Less4j"
+      :dependencies [])
+     (jar)
+     (install)))))
 
 (deftask dev []
   (comp
