@@ -1,4 +1,5 @@
 sudo: false
+language: java
 script: ./test.sh
 install:
   - mkdir -p ~/bin
