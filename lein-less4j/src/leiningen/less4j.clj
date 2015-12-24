@@ -4,7 +4,8 @@
             [leiningen.core.project :as project]
             [leiningen.core.main :as main]
             [leiningen.help :as help]
-            [clojure.java.io :as io]))
+            [clojure.java.io :as io]
+            [leiningen.less4j.version :refer [+version+]]))
 
 (defn main-file? [file]
   (.endsWith (.getName file) ".main.less"))
@@ -17,8 +18,8 @@
                    (map (fn [x] [(.getPath x) (.toString (.relativize (.toURI file) (.toURI x)))])))))
           source-paths))
 
-(def less4j-profile {:dependencies '[[deraen/less4clj "0.5.0-SNAPSHOT"]
-                                     [watchtower "0.1.1"]]})
+(def less4j-profile {:dependencies [['deraen/less4clj +version+]
+                                    ['watchtower "0.1.1"]]})
 
 ; From lein-cljsbuild
 (defn- eval-in-project [project form requires]

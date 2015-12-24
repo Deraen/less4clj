@@ -4,10 +4,11 @@
    [clojure.java.io :as io]
    [boot.pod        :as pod]
    [boot.core       :as core]
-   [boot.util       :as util]))
+   [boot.util       :as util]
+   [deraen.boot-less.version :refer [+version+]]))
 
 (def ^:private deps
-  '[[deraen/less4clj "0.5.0-SNAPSHOT"]])
+  [['deraen/less4clj +version+]])
 
 (defn- find-mainfiles [fs]
   (->> fs

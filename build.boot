@@ -41,6 +41,20 @@
                                           (:tree fileset)))]
         (handler fileset)))))
 
+(deftask write-version-file
+  [n namespace NAMESPACE sym "Namespace"]
+  (let [d (tmp-dir!)]
+    (fn [next-handler]
+      (fn [fileset]
+        (let [f (clojure.java.io/file d (-> (name namespace)
+                                            (clojure.string/replace #"\." "/")
+                                            (clojure.string/replace #"-" "_")
+                                            (str ".clj")))]
+          (println f)
+          (clojure.java.io/make-parents f)
+          (spit f (format "(ns %s)\n\n(def +version+ \"%s\")" (name namespace) +version+)))
+        (next-handler (-> fileset (add-resource d) commit!))))))
+
 (deftask build []
   (comp
    (with-files
@@ -58,6 +72,7 @@
       :project 'deraen/boot-less
       :description "Boot task to compile Less code to Css. Uses Less4j Java implementation of Less compiler."
       :dependencies [])
+     (write-version-file :namespace 'deraen.boot-less.version)
      (jar)
      (install)))
 
@@ -68,6 +83,7 @@
       :project 'deraen/lein-less4j
       :description "Leinigen task for Less4j"
       :dependencies [])
+     (write-version-file :namespace 'leiningen.less4j.version)
      (jar)
      (install)))))
 
@@ -75,7 +91,8 @@
   (comp
    (watch)
    (repl :server true)
-   (build)))
+   (build)
+   (target)))
 
 (deftask deploy []
   (comp
