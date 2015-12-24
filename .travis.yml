@@ -2,7 +2,7 @@ sudo: false
 language: clojure
 script: ./test.sh
 install:
-  - mkdir ~/boot
+  - mkdir -p ~/boot
   - export PATH=~/boot:$PATH
   - curl -L https://github.com/boot-clj/boot-bin/releases/download/latest/boot.sh -o ~/boot/boot
   - chmod +x ~/boot/boot
