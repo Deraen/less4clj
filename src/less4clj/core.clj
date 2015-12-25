@@ -1,17 +1,15 @@
 (ns less4clj.core
-  (:require
-    [clojure.java.io :as io]
-    [clojure.string :as string]
-    [less4clj.util :as util]
-    [less4clj.webjars :as webjars])
-  (:import
-    [java.io IOException File]
-    [java.net JarURLConnection URL URI]
-    [com.github.sommeri.less4j_javascript Less4jJavascript]
-    [com.github.sommeri.less4j
-     LessCompiler LessCompiler$Configuration Less4jException
-     LessSource LessSource$FileNotFound LessSource$CannotReadFile LessSource$StringSourceException]
-    [com.github.sommeri.less4j.core DefaultLessCompiler]))
+  (:require [clojure.java.io :as io]
+            [clojure.string :as string]
+            [less4clj.util :as util]
+            [less4clj.webjars :as webjars])
+  (:import [java.io IOException File]
+           [java.net JarURLConnection URL URI]
+           [com.github.sommeri.less4j_javascript Less4jJavascript]
+           [com.github.sommeri.less4j
+            LessCompiler LessCompiler$Configuration Less4jException
+            LessSource LessSource$FileNotFound LessSource$CannotReadFile LessSource$StringSourceException]
+           [com.github.sommeri.less4j.core DefaultLessCompiler]))
 
 (defn find-local-file [file current-dir]
   (let [f (io/file current-dir file)]

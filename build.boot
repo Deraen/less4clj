@@ -70,7 +70,7 @@
     (comp
      (pom
       :project 'deraen/boot-less
-      :description "Boot task to compile Less code to Css. Uses Less4j Java implementation of Less compiler."
+      :description "Boot task to compile {less}"
       :dependencies [])
      (write-version-file :namespace 'deraen.boot-less.version)
      (jar)
@@ -81,7 +81,7 @@
     (comp
      (pom
       :project 'deraen/lein-less4j
-      :description "Leinigen task for Less4j"
+      :description "Leinigen task to compile {less}"
       :dependencies [])
      (write-version-file :namespace 'leiningen.less4j.version)
      (jar)

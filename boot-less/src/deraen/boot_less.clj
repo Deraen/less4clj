@@ -1,11 +1,10 @@
 (ns deraen.boot-less
   {:boot/export-tasks true}
-  (:require
-   [clojure.java.io :as io]
-   [boot.pod        :as pod]
-   [boot.core       :as core]
-   [boot.util       :as util]
-   [deraen.boot-less.version :refer [+version+]]))
+  (:require [clojure.java.io :as io]
+            [boot.pod :as pod]
+            [boot.core :as core]
+            [boot.util :as util]
+            [deraen.boot-less.version :refer [+version+]]))
 
 (def ^:private deps
   [['deraen/less4clj +version+]])
@@ -31,13 +30,13 @@
                         (update-in [:dependencies] into deps)
                         pod/make-pod
                         future)
-        last-less   (atom nil)]
+        prev        (atom nil)]
     (core/with-pre-wrap fileset
       (let [less (->> fileset
-                      (core/fileset-diff @last-less)
+                      (core/fileset-diff @prev)
                       core/input-files
                       (core/by-ext [".less"]))]
-        (reset! last-less fileset)
+        (reset! prev fileset)
         (when (seq less)
           (util/info "Compiling {less}... %d changed files.\n" (count less))
           (doseq [f (find-mainfiles fileset)]
