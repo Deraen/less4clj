@@ -66,7 +66,7 @@
      (install)))
 
    (with-files
-    (fn [x] (re-find #"boot[-_]less" (tmp-path x)))
+    (fn [x] (re-find #"boot_less" (tmp-path x)))
     (comp
      (pom
       :project 'deraen/boot-less
