@@ -77,7 +77,7 @@
      (install)))
 
    (with-files
-    (fn [x] (re-find #"less4j" (tmp-path x)))
+    (fn [x] (re-find #"leiningen" (tmp-path x)))
     (comp
      (pom
       :project 'deraen/lein-less4j
