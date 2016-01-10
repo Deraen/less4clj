@@ -1,8 +1,4 @@
-# Less4clj [![Build Status](https://travis-ci.org/Deraen/less4clj.svg?branch=master)](https://travis-ci.org/Deraen/less4clj)
-
-[![Clojars Project](http://clojars.org/deraen/less4clj/latest-version.svg)](http://clojars.org/deraen/less4clj)<br>
-[![Clojars Project](http://clojars.org/deraen/boot-less/latest-version.svg)](http://clojars.org/deraen/boot-less)<br>
-[![Clojars Project](http://clojars.org/deraen/lein-less4j/latest-version.svg)](http://clojars.org/deraen/lein-less4j)
+# Less4clj [![Clojars Project](https://img.shields.io/clojars/v/deraen/less4clj.svg)](https://clojars.org/deraen/less4clj) [![Build Status](https://travis-ci.org/Deraen/less4clj.svg?branch=master)](https://travis-ci.org/Deraen/less4clj)
 
 Clojure wrapper for [Less4j](https://github.com/SomMeri/less4j) Java implementation of Less compiler.
 This repository also contains [Boot](http://boot-clj.com/) and [Leiningen](http://leiningen.org/) tasks.
@@ -14,13 +10,13 @@ For parallel Sass library check [sass4clj](https://github.com/Deraen/sass4clj)
 - Load imports directly from Java classpath (e.g. Webjars)
     - Add dependency `[org.webjars.bower/bootstrap "3.3.6"]` to use [Bootstrap](http://getbootstrap.com/)
 
-## Boot
+## Boot [![Clojars Project](https://img.shields.io/clojars/v/deraen/boot-less.svg)](https://clojars.org/deraen/boot-less)
 
 * Provides the `less` task (`deraen.boot-less/less`)
 * For each `.main.less` file in the fileset creates equivalent `.css` file.
 * Check `boot less --help` for task options.
 
-## Leiningen
+## Leiningen [![Clojars Project](https://img.shields.io/clojars/v/deraen/lein-less4j.svg)](https://clojars.org/deraen/lein-less4j)
 
 * Provides the `less4j` task
 * For each `.main.less` file in source-dirs creates equivalent `.css` file.
