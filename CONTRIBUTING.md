@@ -2,7 +2,7 @@
 
 Contributions are welcome.
 
-Please file bug reports and feature requests to https://github.com/Deraen/sass4clj/issues.
+Please file bug reports and feature requests to https://github.com/Deraen/less4clj/issues.
 
 Please mention which task (Leiningen or Boot) your are using in the issue.
 
