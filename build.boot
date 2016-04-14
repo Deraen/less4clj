@@ -9,7 +9,7 @@
                     ;; Webjars-locator uses logging
                     [org.slf4j/slf4j-nop "1.7.12" :scope "test"]
 
-                    [com.github.sommeri/less4j "1.15.4"]
+                    [com.github.sommeri/less4j "1.17.2"]
                     [com.github.sommeri/less4j-javascript "0.0.1" :exclusions [com.github.sommeri/less4j]]
                     [org.webjars/webjars-locator "0.29"]
 
