@@ -61,3 +61,15 @@ a {
 
   (is (= {:output css-with-js :source-map nil}
          (less-compile less-with-js {:inline-javascript true}))))
+
+(def less-with-var-import
+"@web-font-path: \"https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700\";
+
+.web-font(@path) {
+  @import url(\"@{path}\");
+}
+.web-font(@web-font-path);")
+
+(deftest less-with-var-import-test
+  (is (= {:output nil :source-map nil}
+         (less-compile less-with-var-import {}))))
