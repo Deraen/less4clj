@@ -2,7 +2,7 @@ sudo: false
 language: java
 script: ./test.sh
 env:
-  - BOOT_JVM_OPTIONS: "-Xms512m -Xmx1024m"
+  - BOOT_JVM_OPTIONS: -Xms512m -Xmx1024m
 install:
   - mkdir -p ~/bin
   - export PATH=~/bin:$PATH
