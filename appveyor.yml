@@ -1,3 +1,4 @@
+build: off
 install:
   - cmd: mkdir -p C:\Users\appveyor\bin
   - cmd: SET PATH=C:\Users\appveyor\bin;%PATH%
