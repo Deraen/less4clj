@@ -1,0 +1,10 @@
+install:
+  - cmd: mkdir -p C:\Users\appveyor\bin
+  - cmd: SET PATH=C:\Users\appveyor\bin;%PATH%
+  - cmd: curl -L https://github.com/boot-clj/boot-bin/releases/download/latest/boot.sh -o C:\Users\appveyor\bin\boot
+cache:
+  - C:\Users\appveyor\.m2
+  - C:\Users\appveyor\.boot\cache
+  - C:\Users\appveyor\bin
+test_script:
+  - boot run-tests
