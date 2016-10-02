@@ -20,8 +20,13 @@
   (let [[_ x] (re-find #"(.*)/([^/]*)$" url)]
     x))
 
-(defn join-url [a b]
-  (str (.resolve (URI. (if (.endsWith a "/") a (str a "/"))) (URI. b))))
+(defn join-url [& parts]
+  (-> (string/join "/" parts)
+      (string/replace " " "%20")
+      (URI.)
+      (.normalize)
+      (.toString)
+      (string/replace "%20" " ")))
 
 (defn find-resource [url]
   (if url

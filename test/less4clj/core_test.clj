@@ -3,6 +3,12 @@
             [less4clj.core :refer :all])
   (:import [java.io File]))
 
+(deftest join-url-test
+  (is (= "foo/bar" (join-url "foo" "bar")))
+  (is (= "foo/bar" (join-url "foo/" "bar")))
+  (is (= "foo/xxx" (join-url "foo/bar" "../xxx")))
+  (is (= "foo bar/xxx" (join-url "foo bar" "xxx"))))
+
 (def less
 "@test: #fff;
  @import \"foo.less\";
