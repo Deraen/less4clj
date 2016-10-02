@@ -1,4 +1,16 @@
+## Unreleased
+
+**[compare](https://github.com/Deraen/less4clj/compare/0.5.0...master)**
+
+- Handle URL normalization and joining in hopefully more robust way (fixes [#8](https://github.com/Deraen/less4clj/issues/8))
+- Run tests on Windows CI
+- Fixed Webjars import on Windows
+- Update less4j
+- Fix logging errors with "%"
+
 ## 0.5.0 (24.12.2015)
+
+**[compare](https://github.com/Deraen/less4clj/compare/0.4.1...0.5.0)**
 
 - Synchronized versions between all packages
 - Boot and Lein packages are now maintained in less4clj repository
