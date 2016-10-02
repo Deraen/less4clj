@@ -5,13 +5,13 @@
   :source-paths #{"test" "test-resources"}
   :dependencies   '[[org.clojure/clojure "1.8.0" :scope "provided"]
                     [boot/core "2.6.0" :scope "provided"]
-                    [adzerk/boot-test "1.0.7" :scope "test"]
+                    [adzerk/boot-test "1.1.2" :scope "test"]
                     ;; Webjars-locator uses logging
-                    [org.slf4j/slf4j-nop "1.7.12" :scope "test"]
+                    [org.slf4j/slf4j-nop "1.7.21" :scope "test"]
 
                     [com.github.sommeri/less4j "1.17.2"]
                     [com.github.sommeri/less4j-javascript "0.0.1" :exclusions [com.github.sommeri/less4j]]
-                    [org.webjars/webjars-locator "0.29"]
+                    [org.webjars/webjars-locator "0.32"]
 
                     ;; For testing the webjars asset locator implementation
                     [org.webjars/bootstrap "3.3.6" :scope "test"]])
