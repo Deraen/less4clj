@@ -4,7 +4,7 @@
             [less4clj.util :as util]
             [less4clj.webjars :as webjars])
   (:import [java.io IOException File]
-           [java.net JarURLConnection URL URI]
+           [java.net URI]
            [com.github.sommeri.less4j_javascript Less4jJavascript]
            [com.github.sommeri.less4j
             LessCompiler LessCompiler$Configuration Less4jException
@@ -20,13 +20,28 @@
   (let [[_ x] (re-find #"(.*)/([^/]*)$" url)]
     x))
 
+(defn normalize-url
+  "Simple URL normalization logic for import paths. Can normalize
+  relative paths."
+  [url-string]
+  (loop [result nil
+         parts (string/split url-string #"/")]
+    (if (seq parts)
+      (let [part (first parts)]
+        (case part
+          ;; Skip empty
+          "" (recur result (rest parts))
+          ;; Skip "."
+          "." (recur result (rest parts))
+          ;; Remove previous part, if there are previous non ".." parts
+          ".." (if (and (seq result) (not= ".." (first result)))
+                 (recur (rest result) (rest parts))
+                 (recur (conj result part) (rest parts)))
+          (recur (conj result part) (rest parts))))
+      (string/join "/" (reverse result)))))
+
 (defn join-url [& parts]
-  (-> (string/join "/" parts)
-      (string/replace " " "%20")
-      (URI.)
-      (.normalize)
-      (.toString)
-      (string/replace "%20" " ")))
+  (normalize-url (string/join "/" parts)))
 
 (defn find-resource [url]
   (if url

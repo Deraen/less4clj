@@ -3,11 +3,23 @@
             [less4clj.core :refer :all])
   (:import [java.io File]))
 
+(deftest normalize-url-test
+  (is (= "foo/bar" (normalize-url "foo/./bar")))
+  (is (= "foo/bar" (normalize-url "foo//bar")))
+  (is (= "bar" (normalize-url "foo/../bar")))
+  (is (= "../foo" (normalize-url "../foo")))
+  (is (= "../../foo" (normalize-url "../../foo")))
+  (is (= "../../../foo" (normalize-url "../../../foo")))
+  (is (= "../foo" (normalize-url "a/../../foo"))))
+
 (deftest join-url-test
+  (is (= "foo/bar" (join-url "foo" "bar")))
   (is (= "foo/bar" (join-url "foo" "bar")))
   (is (= "foo/bar" (join-url "foo/" "bar")))
   (is (= "foo/xxx" (join-url "foo/bar" "../xxx")))
-  (is (= "foo bar/xxx" (join-url "foo bar" "xxx"))))
+  (is (= "foo bar/xxx" (join-url "foo bar" "xxx")))
+  (is (= "foo%20bar/xxx" (join-url "foo%20bar" "xxx")))
+  (is (= "a/d.less" (join-url "a/b/c" "../../d.less"))))
 
 (def less
 "@test: #fff;
@@ -35,10 +47,6 @@ a {
 
 (deftest import-werbjars
   (is (less-compile "@import \"bootstrap/less/bootstrap.less\";" {})))
-
-(deftest join-url-test
-  (is (= "a/b/c.less" (join-url "a/b" "c.less")))
-  (is (= "a/d.less" (join-url "a/b/c" "../../d.less"))))
 
 (def less-with-js
 "@number: 100;
