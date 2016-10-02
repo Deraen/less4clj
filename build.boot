@@ -3,8 +3,8 @@
 (set-env!
   :resource-paths #{"src" "boot-less/src" "lein-less4j/src"}
   :source-paths #{"test" "test-resources"}
-  :dependencies   '[[org.clojure/clojure "1.7.0" :scope "provided"]
-                    [boot/core "2.5.5" :scope "provided"]
+  :dependencies   '[[org.clojure/clojure "1.8.0" :scope "provided"]
+                    [boot/core "2.6.0" :scope "provided"]
                     [adzerk/boot-test "1.0.7" :scope "test"]
                     ;; Webjars-locator uses logging
                     [org.slf4j/slf4j-nop "1.7.12" :scope "test"]
