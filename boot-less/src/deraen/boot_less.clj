@@ -40,8 +40,10 @@
         (when (seq less)
           (util/info "Compiling {less}... %d changed files.\n" (count less))
           (doseq [f (find-mainfiles fileset)]
-            (let [{:keys [warnings]}
-                  (pod/with-call-in @p
+            (let [{:keys [warnings error]}
+                  (pod/with-eval-in @p
+                    (require 'less4clj.core)
+                    (try
                       (less4clj.core/less-compile-to-file
                         ~(.getPath (core/tmp-file f))
                         ~(.getPath output-dir)
@@ -49,7 +51,17 @@
                         {:source-map ~source-map
                          :compression ~compression
                          :inline-javascript ~inline-javascript
-                         :verbosity ~(deref util/*verbosity*)}))]
+                         :verbosity ~(deref util/*verbosity*)})
+                      (catch Exception e#
+                        (let [data# (ex-data e#)]
+                          (if (= :less4clj.core/error (:type data#))
+                            {:error (.getMessage e#)}
+                            (throw e#))) )))]
+
+              ;; minimal stack trace and no data -> shorter message
+              (when error
+                (throw (Exception. error)))
+
               (swap! core/*warnings* + (count warnings))
               (doseq [{:keys [message source line char]} warnings]
                 (util/warn "WARN: %s %s\n" message
