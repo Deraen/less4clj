@@ -45,6 +45,8 @@
    {:keys [source-paths target-path]
     :as options}
    watch?]
+  (when-not target-path
+    (main/abort "Lein-less4j requires :target-path option."))
   (let [project' (project/merge-profiles project [less4j-profile])
         main-files (vec (find-main-files source-paths))]
     (eval-in-project
