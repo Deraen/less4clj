@@ -165,10 +165,9 @@
                        (.compile
                          (->less-source ctx input)
                          (build-configuration options)))]
-        (doseq [warn (.getWarnings result)]
-          (util/warn "WARNING: %s\n" (.getMessage warn)))
         {:output (.getCss result)
-         :source-map (if source-map (.getSourceMap result))})
+         :source-map (if source-map (.getSourceMap result))
+         :warnings (vec (map problem->clj (.getWarnings result)))})
       (catch Less4jException e
         (throw (ex-info (.getMessage e)
                         {:type ::error

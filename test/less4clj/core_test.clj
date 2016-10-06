@@ -42,8 +42,10 @@ a {
 (spit test-file less)
 
 (deftest less-compile-test
-  (is (= {:output css :source-map nil} (less-compile test-file {})))
-  (is (= {:output css :source-map nil} (less-compile less {}))))
+  (is (= {:output css :source-map nil :warnings []}
+         (less-compile test-file {})))
+  (is (= {:output css :source-map nil :warnings []}
+         (less-compile less {}))))
 
 (deftest import-werbjars
   (is (less-compile "@import \"bootstrap/less/bootstrap.less\";" {})))
@@ -70,10 +72,10 @@ a {
 (spit test-file-with-js less-with-js)
 
 (deftest less-compile-test-with-js
-  (is (= {:output css-with-js :source-map nil}
+  (is (= {:output css-with-js :source-map nil :warnings []}
          (less-compile test-file-with-js {:inline-javascript true})))
 
-  (is (= {:output css-with-js :source-map nil}
+  (is (= {:output css-with-js :source-map nil :warnings []}
          (less-compile less-with-js {:inline-javascript true}))))
 
 (deftest less-compile-error
@@ -85,3 +87,15 @@ a {
       (let [{:keys [type errors]} (ex-data e)]
         (is (= :less4clj.core/error type))
         (is (= 2 (count errors)))))))
+
+(def warning-file (doto (File/createTempFile "less4clj" "warning-test.less")
+                    (spit "{ color: red }")))
+
+(deftest less-compile-warning
+  (is (= {:type "WARNING"
+          :source {:name (.getName warning-file)
+                   :uri (.toString (.toURI warning-file))}
+          :line 1
+          :char 1
+          :message "Ruleset without selector encountered."}
+         (first (:warnings (less-compile warning-file {}))))))

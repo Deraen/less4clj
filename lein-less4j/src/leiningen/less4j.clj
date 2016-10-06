@@ -58,6 +58,13 @@
                             ~(.getPath (io/file target-path))
                             relative-path#
                             ~(dissoc options :target-path :source-paths))]
+                      (doseq [warning# (:warnings result#)]
+                        (println (format "WARN: %s %s\n" (:message warning#)
+                                         (str (if (:uri (:source warning#))
+                                                (str "on file "
+                                                     (:uri (:source warning#))
+                                                     (if (:line warning#)
+                                                       (str " at line " (:line warning#) " character " (:char warning#)))))))))
                       (when (:error result#)
                         (if ~watch?
                           (println (:error result#))
