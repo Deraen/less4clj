@@ -7,7 +7,7 @@
            [java.net URI]
            [com.github.sommeri.less4j_javascript Less4jJavascript]
            [com.github.sommeri.less4j
-            LessCompiler LessCompiler$Configuration Less4jException
+            LessCompiler LessCompiler$Configuration LessCompiler$Problem LessCompiler$Problem$Type Less4jException
             LessSource LessSource$FileNotFound LessSource$CannotReadFile LessSource$StringSourceException]
            [com.github.sommeri.less4j.core DefaultLessCompiler]))
 
@@ -141,6 +141,15 @@
 (defmethod ->less-source String [ctx source]
   (inline-less-source ctx source))
 
+(defn problem->clj [^LessCompiler$Problem problem]
+  (let [source (.getSource problem)]
+    {:type (.toString (.getType problem))
+     :source {:name (.getName source)
+              :uri (str (.getURI source))}
+     :line (.getLine problem)
+     :char (.getCharacter problem)
+     :message (.getMessage problem)}))
+
 (defn less-compile
   "Input can be:
    - File
@@ -161,15 +170,17 @@
         {:output (.getCss result)
          :source-map (if source-map (.getSourceMap result))})
       (catch Less4jException e
-        (util/fail (.getMessage e))
-        {:error e}))))
+        (throw (ex-info (.getMessage e)
+                        {:type ::error
+                         :errors (vec (map problem->clj (.getErrors e)))}))))))
 
 (defn less-compile-to-file [path target-dir relative-path options]
   (let [input-file (io/file path)
         output-file (io/file target-dir (string/replace relative-path #"\.main\.less$" ".css"))
         source-map-output (io/file target-dir (string/replace relative-path #"\.main\.less$" ".main.css.map"))
-        {:keys [output source-map]} (less-compile input-file options)]
+        {:keys [output source-map] :as result} (less-compile input-file options)]
     (when output
       (io/make-parents output-file)
       (spit output-file output)
-      (when source-map (spit source-map-output source-map)))))
+      (when source-map (spit source-map-output source-map)))
+    result))

@@ -75,3 +75,13 @@ a {
 
   (is (= {:output css-with-js :source-map nil}
          (less-compile less-with-js {:inline-javascript true}))))
+
+(deftest less-compile-error
+  (is (thrown? clojure.lang.ExceptionInfo (less-compile "foosdfsdf%;" {})))
+
+  (try
+    (less-compile "foosdfsdf%;" {})
+    (catch Exception e
+      (let [{:keys [type errors]} (ex-data e)]
+        (is (= :less4clj.core/error type))
+        (is (= 2 (count errors)))))))

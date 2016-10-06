@@ -40,15 +40,18 @@
         (when (seq less)
           (util/info "Compiling {less}... %d changed files.\n" (count less))
           (doseq [f (find-mainfiles fileset)]
-            (pod/with-call-in @p
-              (less4clj.core/less-compile-to-file
-                ~(.getPath (core/tmp-file f))
-                ~(.getPath output-dir)
-                ~(core/tmp-path f)
-                {:source-map ~source-map
-                 :compression ~compression
-                 :inline-javascript ~inline-javascript
-                 :verbosity ~(deref util/*verbosity*)})))))
+            (let [{:keys [error]}
+                  (pod/with-call-in @p
+                      (less4clj.core/less-compile-to-file
+                        ~(.getPath (core/tmp-file f))
+                        ~(.getPath output-dir)
+                        ~(core/tmp-path f)
+                        {:source-map ~source-map
+                         :compression ~compression
+                         :inline-javascript ~inline-javascript
+                         :verbosity ~(deref util/*verbosity*)}))]
+              (when error
+                (throw (Exception. error)))))))
         (-> fileset
             (core/add-resource output-dir)
             core/commit!))))

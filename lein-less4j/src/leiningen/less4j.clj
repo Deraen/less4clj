@@ -33,7 +33,9 @@
          (System/exit 0))
        (catch Exception e#
          (do
-           (.printStackTrace e#)
+           (if (= :less-error (:type (ex-data e#)))
+             (println (.getMessage e#))
+             (.printStackTrace e#))
            (System/exit 1))))
     requires))
 
@@ -50,11 +52,16 @@
       `(let [f# (fn compile-less [& ~'_]
                   (doseq [[path# relative-path#] ~main-files]
                     (println (format "Compiling {less}... %s" relative-path#))
-                    (less4clj.core/less-compile-to-file
-                      path#
-                      ~(.getPath (io/file target-path))
-                      relative-path#
-                      ~(dissoc options :target-path :source-paths))))]
+                    (let [result#
+                          (less4clj.core/less-compile-to-file
+                            path#
+                            ~(.getPath (io/file target-path))
+                            relative-path#
+                            ~(dissoc options :target-path :source-paths))]
+                      (when (:error result#)
+                        (if ~watch?
+                          (println (:error result#))
+                          (throw (ex-info (:error result#) {:type :less-error})))))))]
          (if ~watch?
            @(watchtower.core/watcher
              ~source-paths
