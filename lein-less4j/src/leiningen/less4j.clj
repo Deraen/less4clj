@@ -33,7 +33,7 @@
          (System/exit 0))
        (catch Exception e#
          (do
-           (if (= :less-error (:type (ex-data e#)))
+           (if (= :less4clj.core/error (:type (ex-data e#)))
              (println (.getMessage e#))
              (.printStackTrace e#))
            (System/exit 1))))
@@ -53,22 +53,23 @@
                   (doseq [[path# relative-path#] ~main-files]
                     (println (format "Compiling {less}... %s" relative-path#))
                     (let [result#
-                          (less4clj.core/less-compile-to-file
-                            path#
-                            ~(.getPath (io/file target-path))
-                            relative-path#
-                            ~(dissoc options :target-path :source-paths))]
+                          (try
+                            (less4clj.core/less-compile-to-file
+                              path#
+                              ~(.getPath (io/file target-path))
+                              relative-path#
+                              ~(dissoc options :target-path :source-paths))
+                            (catch Exception e#
+                              (if ~watch?
+                                (println (.getMessage e#))
+                                (throw e#))))]
                       (doseq [warning# (:warnings result#)]
                         (println (format "WARN: %s %s\n" (:message warning#)
                                          (str (if (:uri (:source warning#))
                                                 (str "on file "
                                                      (:uri (:source warning#))
                                                      (if (:line warning#)
-                                                       (str " at line " (:line warning#) " character " (:char warning#)))))))))
-                      (when (:error result#)
-                        (if ~watch?
-                          (println (:error result#))
-                          (throw (ex-info (:error result#) {:type :less-error})))))))]
+                                                       (str " at line " (:line warning#) " character " (:char warning#))))))))))))]
          (if ~watch?
            @(watchtower.core/watcher
              ~source-paths

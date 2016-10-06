@@ -40,7 +40,7 @@
         (when (seq less)
           (util/info "Compiling {less}... %d changed files.\n" (count less))
           (doseq [f (find-mainfiles fileset)]
-            (let [{:keys [error warnings]}
+            (let [{:keys [warnings]}
                   (pod/with-call-in @p
                       (less4clj.core/less-compile-to-file
                         ~(.getPath (core/tmp-file f))
@@ -57,9 +57,7 @@
                                   (str "on file "
                                        (:uri source)
                                        (if line
-                                         (str " at line " line " character " char)))))))
-              (when error
-                (throw (Exception. error)))))))
+                                         (str " at line " line " character " char)))))))))))
         (-> fileset
             (core/add-resource output-dir)
             core/commit!))))
