@@ -113,6 +113,8 @@ Available options:
 :inline-javascript    Enable inline Javascript plugin.
 :verbosity            Set verbosity level, valid values are 1 and 2.
 
+Other options are passed as is to less4clj.
+
 Command arguments:
 Add `:debug` as subtask argument to enable debugging output."
   {:help-arglists '([once auto])
