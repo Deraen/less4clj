@@ -4,6 +4,8 @@
             [boot.pod :as pod]
             [boot.core :as core]
             [boot.util :as util]
+            [boot.file :as file]
+            [clojure.string :as string]
             [deraen.boot-less.version :refer [+version+]]))
 
 (def ^:private deps
@@ -13,6 +15,39 @@
   (->> fs
        core/input-files
        (core/by-ext [".main.less"])))
+
+(defn- find-relative-path [dirs filepath]
+  (if-let [file (io/file filepath)]
+    (let [parent (->> dirs
+                      (map io/file)
+                      (some (fn [x] (if (file/parent? x file) x))))]
+      (if parent (.getPath (file/relative-to parent file))))))
+
+(defn- find-original-path [filepath]
+  (let [source-paths (concat (:source-paths pod/env) (:resource-paths pod/env))
+        dirs (:directories pod/env)]
+    (if-let [rel-path (find-relative-path dirs filepath)]
+      (or (some (fn [source-path]
+                  (let [f (io/file source-path rel-path)]
+                    (if (.exists f)
+                      (.getPath f))))
+                source-paths)
+          rel-path)
+      filepath)))
+
+(defn- fixed-message
+  "Replaces the tmp-path in formatted error message using path in working dir."
+  [message]
+  (string/replace message #"(ERROR )(file:[^\s]*)" (fn [[_ prefix wrong-path]]
+                                                     (str prefix (find-original-path (.getPath (java.net.URI. wrong-path)))))))
+
+(defn ->warning [{:keys [message source line char]}]
+  {:message (some-> message
+                    (fixed-message)
+                    (string/replace #"\.$" ""))
+   :file (if source (find-original-path (.getPath (java.net.URI. (:uri source)))))
+   :line line
+   :column char})
 
 (core/deftask less
   "{less} CSS compiler.
@@ -35,7 +70,8 @@
       (let [less (->> fileset
                       (core/fileset-diff @prev)
                       core/input-files
-                      (core/by-ext [".less"]))]
+                      (core/by-ext [".less"]))
+            warning-meta (atom {})]
         (reset! prev fileset)
         (when (seq less)
           (util/info "Compiling {less}... %d changed files.\n" (count less))
@@ -55,21 +91,25 @@
                       (catch Exception e#
                         (let [data# (ex-data e#)]
                           (if (= :less4clj.core/error (:type data#))
-                            {:error (.getMessage e#)}
-                            (throw e#))) )))]
+                            {:error (assoc data# :message (.getMessage e#))}
+                            (throw e#))) )))
+                  warnings (map ->warning warnings)]
 
-              ;; minimal stack trace and no data -> shorter message
               (when error
-                (throw (Exception. error)))
+                (throw (ex-info (fixed-message (:message error))
+                                (merge {:adzerk.boot-reload/exception true}
+                                       (->warning error)))))
 
               (swap! core/*warnings* + (count warnings))
-              (doseq [{:keys [message source line char]} warnings]
+              (swap! warning-meta update-in [(core/tmp-path f) :adzerk.boot-reload/warnings] (fnil into []) warnings)
+              (doseq [{:keys [message file line column]} warnings]
                 (util/warn "WARN: %s %s\n" message
-                           (str (if (:uri source)
+                           (str (if file
                                   (str "on file "
-                                       (:uri source)
+                                       file
                                        (if line
-                                         (str " at line " line " character " char)))))))))))
+                                         (str " at line " line " character " column))))))))))
         (-> fileset
             (core/add-resource output-dir)
-            core/commit!))))
+            (core/add-meta @warning-meta)
+            core/commit!)))))
