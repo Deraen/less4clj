@@ -1,6 +1,6 @@
-## Unreleased
+## 0.6.0 (18.10.2016)
 
-**[compare](https://github.com/Deraen/less4clj/compare/0.5.0...master)**
+**[compare](https://github.com/Deraen/less4clj/compare/0.5.0...0.6.0)**
 
 - Handle URL normalization and joining in hopefully more robust way (fixes [#8](https://github.com/Deraen/less4clj/issues/8))
 - Run tests on Windows CI
