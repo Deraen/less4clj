@@ -1,3 +1,9 @@
+## 0.6.1 (1.1.2017)
+
+**[compare](https://github.com/Deraen/less4clj/compare/0.6.0...0.6.1)**
+
+- Hide stack trace of Less compilation errors [boot-clj/boot#532](https://github.com/boot-clj/boot/pull/532)
+
 ## 0.6.0 (18.10.2016)
 
 **[compare](https://github.com/Deraen/less4clj/compare/0.5.0...0.6.0)**

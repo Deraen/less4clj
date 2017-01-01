@@ -97,7 +97,8 @@
 
               (when error
                 (throw (ex-info (fixed-message (:message error))
-                                (merge {:adzerk.boot-reload/exception true}
+                                (merge {:adzerk.boot-reload/exception true
+                                        :boot.util/omit-stacktrace? true}
                                        (->warning error)))))
 
               (swap! core/*warnings* + (count warnings))
