@@ -51,7 +51,7 @@
         main-files (vec (find-main-files source-paths))]
     (eval-in-project
       project'
-      `(let [f# (fn compile-less [& ~'_]
+      `(let [f# (fn ~'compile-less [& ~'_]
                   (doseq [[path# relative-path#] ~main-files]
                     (println (format "Compiling {less}... %s" relative-path#))
                     (let [result#
