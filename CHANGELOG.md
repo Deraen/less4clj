@@ -1,3 +1,9 @@
+## 0.6.2 (27.1.2017)
+
+**[compare](https://github.com/Deraen/less4clj/compare/0.6.1...0.6.2)**
+
+- Fixed a bad macro in Leiningen plugin which broke less4clj with Clojure 1.9-alpha14 ([#11](https://github.com/Deraen/less4clj/pull/11))
+
 ## 0.6.1 (1.1.2017)
 
 **[compare](https://github.com/Deraen/less4clj/compare/0.6.0...0.6.1)**

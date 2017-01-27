@@ -1,4 +1,4 @@
-(def +version+ "0.6.1")
+(def +version+ "0.6.2")
 
 (set-env!
   :resource-paths #{"src" "boot-less/src" "lein-less4j/src"}
