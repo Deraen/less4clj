@@ -49,6 +49,8 @@
     (main/abort "Lein-less4j requires :target-path option."))
   (let [project' (project/merge-profiles project [less4j-profile])
         main-files (vec (find-main-files source-paths))]
+    (when-not (seq main-files)
+      (main/abort "No files with a \".main.less\" suffix found."))
     (eval-in-project
       project'
       `(let [f# (fn ~'compile-less [& ~'_]
