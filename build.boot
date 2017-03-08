@@ -4,9 +4,9 @@
   :resource-paths #{"src" "boot-less/src" "lein-less4j/src"}
   :source-paths #{"test" "test-resources"}
   :dependencies   '[[org.clojure/clojure "1.8.0" :scope "provided"]
-                    [adzerk/boot-test "1.1.2" :scope "test"]
+                    [metosin/boot-alt-test "0.3.0" :scope "test"]
                     ;; Webjars-locator uses logging
-                    [org.slf4j/slf4j-nop "1.7.21" :scope "test"]
+                    [org.slf4j/slf4j-nop "1.7.24" :scope "test"]
 
                     [com.github.sommeri/less4j "1.17.2"]
                     [com.github.sommeri/less4j-javascript "0.0.1" :exclusions [com.github.sommeri/less4j]]
@@ -15,7 +15,7 @@
                     ;; For testing the webjars asset locator implementation
                     [org.webjars/bootstrap "3.3.6" :scope "test"]])
 
-(require '[adzerk.boot-test :refer [test]])
+(require '[metosin.boot-alt-test :refer [alt-test]])
 
 (task-options!
   pom {:version     +version+
@@ -98,6 +98,15 @@
    (build)
    (push :repo "clojars" :gpg-sign (not (.endsWith +version+ "-SNAPSHOT")))))
 
-(deftask run-tests []
+(ns-unmap *ns* 'test)
+
+(deftask test []
   (comp
-   (test :namespaces #{'less4clj.core-test 'less4clj.webjars-test})))
+    (write-version-file :namespace 'deraen.boot-sass.version)
+    (write-version-file :namespace 'leiningen.sass4clj.version)
+    (alt-test :report 'eftest.report.pretty/report)))
+
+(deftask autotest []
+  (comp
+    (watch)
+    (test)))
