@@ -1,19 +1,19 @@
-(def +version+ "0.6.2")
+(def +version+ "0.6.3-SNAPSHOT")
 
 (set-env!
   :resource-paths #{"src" "boot-less/src" "lein-less4j/src"}
   :source-paths #{"test" "test-resources"}
   :dependencies   '[[org.clojure/clojure "1.8.0" :scope "provided"]
-                    [metosin/boot-alt-test "0.3.0" :scope "test"]
+                    [metosin/boot-alt-test "0.3.2" :scope "test"]
                     ;; Webjars-locator uses logging
-                    [org.slf4j/slf4j-nop "1.7.24" :scope "test"]
+                    [org.slf4j/slf4j-nop "1.7.25" :scope "test"]
 
                     [com.github.sommeri/less4j "1.17.2"]
                     [com.github.sommeri/less4j-javascript "0.0.1" :exclusions [com.github.sommeri/less4j]]
-                    [org.webjars/webjars-locator "0.32"]
+                    [org.webjars/webjars-locator "0.32-1"]
 
                     ;; For testing the webjars asset locator implementation
-                    [org.webjars/bootstrap "3.3.6" :scope "test"]])
+                    [org.webjars/bootstrap "3.3.7-1" :scope "test"]])
 
 (require '[metosin.boot-alt-test :refer [alt-test]])
 
