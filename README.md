@@ -40,6 +40,11 @@ Loading order for `@import "{name}";` on file at `{path}`
 
 ## FAQ
 
+### Semantic-UI theme.config
+
+Semantic-UI needs [theme.config](https://github.com/Semantic-Org/Semantic-UI/blob/master/src/theme.config.example)
+file in your project. Add this file to your classpath under path `META-INF/resources/webjars/semantic-ui/2.2.10/src/theme.config`, e.g under `resources/` folder.
+
 ### Log configuration
 
 If you don't have any slf4j implementations you will see a warning:
