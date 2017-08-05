@@ -12,7 +12,7 @@ For parallel Sass library check [sass4clj](https://github.com/Deraen/sass4clj)
 
 ## Features
 
-- Load imports directly from Java classpath (e.g. Webjars)
+- Load imports directly from Java classpath (e.g. [Webjars](https://www.webjars.org/))
     - Add dependency `[org.webjars.bower/bootstrap "3.3.6"]` to use [Bootstrap](http://getbootstrap.com/)
 
 ## Boot [![Clojars Project](https://img.shields.io/clojars/v/deraen/boot-less.svg)](https://clojars.org/deraen/boot-less) [![Downloads](https://jarkeeper.com/deraen/boot-less/downloads.svg)](https://jarkeeper.com/deraen/boot-less)
