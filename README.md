@@ -15,18 +15,6 @@ For parallel Sass library check [sass4clj](https://github.com/Deraen/sass4clj)
 - Load imports directly from Java classpath (e.g. Webjars)
     - Add dependency `[org.webjars.bower/bootstrap "3.3.6"]` to use [Bootstrap](http://getbootstrap.com/)
 
-## Boot [![Clojars Project](https://img.shields.io/clojars/v/deraen/boot-less.svg)](https://clojars.org/deraen/boot-less) [![Downloads](https://jarkeeper.com/deraen/boot-less/downloads.svg)](https://jarkeeper.com/deraen/boot-less)
-
-* Provides the `less` task (`deraen.boot-less/less`)
-* For each `.main.less` file in the fileset creates equivalent `.css` file.
-* Check `boot less --help` for task options.
-
-## Leiningen [![Clojars Project](https://img.shields.io/clojars/v/deraen/lein-less4j.svg)](https://clojars.org/deraen/lein-less4j) [![Downloads](https://jarkeeper.com/deraen/lein-less4j/downloads.svg)](https://jarkeeper.com/deraen/lein-less4j)
-
-* Provides the `less4j` task
-* For each `.main.less` file in source-dirs creates equivalent `.css` file.
-* Check `lein help less4j` for options.
-
 ## Import load order
 
 Loading order for `@import "{name}";` on file at `{path}`
