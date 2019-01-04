@@ -21,11 +21,19 @@ For parallel Sass library check [sass4clj](https://github.com/Deraen/sass4clj)
 * For each `.main.less` file in the fileset creates equivalent `.css` file.
 * Check `boot less --help` for task options.
 
-## Leiningen [![Clojars Project](https://img.shields.io/clojars/v/deraen/lein-less4j.svg)](https://clojars.org/deraen/lein-less4j) [![Downloads](https://jarkeeper.com/deraen/lein-less4j/downloads.svg)](https://jarkeeper.com/deraen/lein-less4j)
+## Leiningen [![Clojars Project](https://img.shields.io/clojars/v/deraen/lein-less4clj.svg)](https://clojars.org/deraen/lein-less4clj) [![Downloads](https://jarkeeper.com/deraen/lein-less4clj/downloads.svg)](https://jarkeeper.com/deraen/lein-less4clj)
 
-* Provides the `less4j` task
+* Provides the `less4clj` task
 * For each `.main.less` file in source-dirs creates equivalent `.css` file.
-* Check `lein help less4j` for options.
+* Check `lein help less4clj` for options.
+
+## Clj
+
+Test in the repository:
+
+`clj -m less4clj.main --source-paths test-resources`
+
+Check `clj -m less4clj.main --help` for options.
 
 ## Import load order
 
