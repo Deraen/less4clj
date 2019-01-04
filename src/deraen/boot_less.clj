@@ -6,7 +6,7 @@
             [boot.util :as util]
             [boot.file :as file]
             [clojure.string :as string]
-            [less4clj.version :refer [+version+]]))
+            [deraen.boot-less.version :refer [+version+]]))
 
 (def ^:private deps
   [['deraen/less4clj +version+]])

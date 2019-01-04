@@ -10,7 +10,7 @@
    ["-a" "--auto" "Enable file watcher"]
    ["-t" "--target-path TARGET" "The path where CSS files are written to"
     :default "target"]
-   ["-s" "--source-map" "Enalbe source-maps for compiled CSS"]
+   ["-s" "--source-map" "Enable source-maps for compiled CSS"]
    ["-c" "--compression" "Enable compression for compiled CSS using simple compression"]
    ["-i" "--inline-javascript" "Enable inline JavaScript plugin"]
    ["-v" "--verbosity LEVEL" "Set verbosity level, valid values are 1 and 2."

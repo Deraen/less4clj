@@ -5,31 +5,18 @@
             [leiningen.core.main :as main]
             [leiningen.help :as help]
             [clojure.java.io :as io]
-            [less4clj.version :refer [+version+]]))
+            [leiningen.less4clj.version :refer [+version+]]))
 
-(def less4clj-profile {:dependencies [['watchtower "0.1.1"]]})
-
-; From lein-cljsbuild
-(defn- eval-in-project [project form requires]
-  (leval/eval-in-project
-    project
-    ; Without an explicit exit, the in-project subprocess seems to just hang for
-    ; around 30 seconds before exiting. I don't fully understand why...
-    `(try
-       ~form
-       (System/exit 0)
-       (catch Exception e#
-         (.printStackTrace e#)
-         (System/exit 1)))
-    requires))
+(def less4clj-profile {:dependencies [['hawk "0.2.11"]
+                                      ['deraen/less4clj +version+]]})
 
 (defn- run-compiler
   "Run the lesscss compiler."
   [project options]
-  (eval-in-project
+  (leval/eval-in-project
     (project/merge-profiles project [less4clj-profile])
-    `(do @(main/build options))
-    '(require 'less4clj.main 'less4clj.watcher)))
+    `(less4clj.api/build ~options)
+    '(require 'less4clj.api)))
 
 ;; For docstrings
 
@@ -52,7 +39,7 @@ code should be at path `{source-path}/public/css/style.main.less`.
 
 If you are seeing SLF4J warnings, check https://github.com/Deraen/less4clj#log-configuration
 
-Options should be provided using `:less` key in project map.
+Options should be provided using `:less4clj` key in project map.
 
 Available options:
 :target-path          The path where CSS files are written to.
@@ -73,7 +60,10 @@ Add `:debug` as subtask argument to enable debugging output."
    (main/abort))
   ([project subtask & args]
    (let [args (set args)
-         config (cond-> (:less project)
+         config (cond-> (or (:less4clj project)
+                            (when-let [opts (:less project)]
+                              (println "WARNING: Detected old config key :less, use :less4clj instead.")
+                              opts))
                   (contains? args ":debug") (assoc :verbosity 2))]
      (case subtask
        "once" (run-compiler project config)

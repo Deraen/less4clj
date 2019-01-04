@@ -45,7 +45,7 @@
         (println (.getMessage e))
         (throw e)))))
 
-(s/def ::source-maps (s/coll-of string? :into vec))
+(s/def ::source-paths (s/coll-of string? :into vec))
 (s/def ::auto boolean?)
 (s/def ::help boolean?)
 (s/def ::target-path string?)
@@ -60,11 +60,13 @@
 (defn build [{:keys [source-paths auto] :as options}]
   (when-not (s/valid? ::options options)
     (s/explain-out (s/explain-data ::options options)))
-  (let [main-files (vec (find-main-files source-paths))
-        options (dissoc options :source-paths)]
+  (let [options (dissoc options :source-paths)]
     (if auto
-      (watcher/start source-paths (fn [& _] (compile-less main-files options)))
-      (compile-less main-files options))))
+      (watcher/start source-paths (fn [& _]
+                                    (let [main-files (find-main-files source-paths)]
+                                      (compile-less main-files options))))
+      (let [main-files (find-main-files source-paths)]
+        (compile-less main-files options)))))
 
 (defn start [options]
   (build (assoc options :auto true)))

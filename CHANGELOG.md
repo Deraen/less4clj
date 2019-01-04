@@ -3,6 +3,7 @@
 **[compare](https://github.com/Deraen/less4clj/compare/0.6.2...master)**
 
 - **Breaking**:
+    - Requires Clojure 1.9 (for spec)
     - Separate `lein-less4j` and `boot-less` packages have been discontinued,
     and both are now packaged into `less4clj`.
     - Lein plugin is renamed `less4clj` for consistency, `less4j` name is no longer used in anywhere.
