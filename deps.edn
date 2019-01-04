@@ -1,5 +1,5 @@
 {:deps {com.github.sommeri/less4j {:mvn/version "1.17.2"}
         com.github.sommeri/less4j-javascript {:mvn/version "0.0.1" :exclusions [com.github.sommeri/less4j]}
         org.webjars/webjars-locator {:mvn/version "0.32-1"}
-        watchtower {:mvn/version "0.1.1"}
+        hawk {:mvn/version "0.2.11"}
         org.clojure/tools.cli {:mvn/version "0.4.1"}}}
