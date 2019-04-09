@@ -57,16 +57,20 @@
                          :opt-un [::auto ::help ::compression ::source-map
                                   ::inline-javascript ::verbosity]))
 
+(defn- find-files-and-compile [source-paths options]
+  (let [main-files (find-main-files source-paths)]
+    (when-not (seq main-files)
+      (println "No files with a \".main.less\" suffix found."))
+    (compile-less main-files options)))
+
 (defn build [{:keys [source-paths auto] :as options}]
   (when-not (s/valid? ::options options)
     (s/explain-out (s/explain-data ::options options)))
   (let [options (dissoc options :source-paths)]
     (if auto
       (watcher/start source-paths (fn [& _]
-                                    (let [main-files (find-main-files source-paths)]
-                                      (compile-less main-files options))))
-      (let [main-files (find-main-files source-paths)]
-        (compile-less main-files options)))))
+                                    (find-files-and-compile source-paths options)))
+      (find-files-and-compile source-paths options))))
 
 (defn start [options]
   (build (assoc options :auto true)))
