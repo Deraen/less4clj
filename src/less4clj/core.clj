@@ -180,6 +180,6 @@
         {:keys [output source-map] :as result} (less-compile input-file options)]
     (when output
       (io/make-parents output-file)
-      (spit output-file output)
+      (spit output-file (string/replace output #"(/\*# sourceMappingURL=.*)\.main\.css\.map( \*/)" "$1.css.map$2"))
       (when source-map (spit source-map-output source-map)))
     result))
