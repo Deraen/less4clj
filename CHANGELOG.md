@@ -1,6 +1,6 @@
-## Unreleased
+## 0.7.0 (2019-08-20)
 
-**[compare](https://github.com/Deraen/less4clj/compare/0.6.2...master)**
+**[compare](https://github.com/Deraen/less4clj/compare/0.6.2...0.7.0)**
 
 - **Breaking**:
     - Requires Clojure 1.9 (for spec)
