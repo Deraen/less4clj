@@ -11,10 +11,14 @@
 (def ^:private deps
   [['deraen/less4clj +version+]])
 
-(defn- find-mainfiles [fs]
-  (->> fs
-       core/input-files
-       (core/by-ext [".main.less"])))
+(defn- find-mainfiles [fs inputs]
+  (if inputs
+    (->> fs
+         core/input-files
+         (core/by-path inputs))
+    (->> fs
+         core/input-files
+         (core/by-ext [".main.less"]))))
 
 (defn- find-relative-path [dirs filepath]
   (if-let [file (io/file filepath)]
@@ -59,7 +63,8 @@
   If you are seeing SLF4J warnings, check https://github.com/Deraen/less4clj#log-configuration"
   [s source-map  bool "Enable source-maps for compiled CSS."
    c compression bool "Enable compression compiled CSS using simple compression."
-   i inline-javascript bool "Enable inline Javascript plugin."]
+   _ inline-javascript bool "Enable inline Javascript plugin."
+   i inputs PATH [str] "List of LESS main file paths, relative to fileset"]
   (let [output-dir  (core/tmp-dir!)
         p           (-> (core/get-env)
                         (update-in [:dependencies] into deps)
@@ -75,7 +80,7 @@
         (reset! prev fileset)
         (when (seq less)
           (util/info "Compiling {less}... %d changed files.\n" (count less))
-          (doseq [f (find-mainfiles fileset)]
+          (doseq [f (find-mainfiles fileset inputs)]
             (let [{:keys [warnings error]}
                   (pod/with-eval-in @p
                     (require 'less4clj.core)

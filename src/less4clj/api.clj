@@ -7,11 +7,15 @@
 (defn main-file? [file]
   (.endsWith (.getName file) ".main.less"))
 
-(defn find-main-files [source-paths]
+(defn find-main-files [source-paths {:keys [inputs]}]
   (mapcat (fn [source-path]
             (let [file (io/file source-path)]
-              (->> (file-seq file)
-                   (filter main-file?)
+              (->> (if inputs
+                     (->> inputs
+                          (map #(io/file file %))
+                          (filter #(.exists %)))
+                     (->> (file-seq file)
+                          (filter main-file?)))
                    (map (fn [x] [(.getPath x) (.toString (.relativize (.toURI file) (.toURI x)))])))))
           source-paths))
 
@@ -46,6 +50,7 @@
         (throw e)))))
 
 (s/def ::source-paths (s/coll-of string? :into vec))
+(s/def ::inputs (s/coll-of string? :into vec))
 (s/def ::auto boolean?)
 (s/def ::help boolean?)
 (s/def ::target-path string?)
@@ -54,13 +59,15 @@
 (s/def ::inline-javascript boolean?)
 (s/def ::verbosity #{1 2})
 (s/def ::options (s/keys :req-un [::source-paths ::target-path]
-                         :opt-un [::auto ::help ::compression ::source-map
+                         :opt-un [::inputs ::auto ::help ::compression ::source-map
                                   ::inline-javascript ::verbosity]))
 
 (defn- find-files-and-compile [source-paths options]
-  (let [main-files (find-main-files source-paths)]
+  (let [main-files (find-main-files source-paths options)]
     (when-not (seq main-files)
-      (println "No files with a \".main.less\" suffix found."))
+      (if (:inputs options)
+        (println "No input files found.")
+        (println "No files with a \".main.less\" suffix found.")))
     (compile-less main-files options)))
 
 (defn build [{:keys [source-paths auto] :as options}]

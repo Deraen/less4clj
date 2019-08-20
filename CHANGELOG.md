@@ -12,6 +12,7 @@
 - Add [Integrant](https://github.com/weavejester/integrant) namespace `less4clj.integrant` namespace
 - Add [Component](https://github.com/stuartsierra/component) namespace `less4clj.component` namespace
 - Use [Hawk](https://github.com/wkf/hawk/) for watching for file changes, this should work better on OS X
+- Add `inputs` option which can be used to select main files
 
 ## 0.6.2 (27.1.2017)
 

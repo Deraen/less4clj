@@ -22,6 +22,9 @@
     :default ["src"]
     :parse-fn (fn [x]
                 (str/split x #","))]
+   ["-i" "--inputs PATHS" "List of SASS main file paths, relative to source-path, comma separated"
+    :parse-fn (fn [x]
+                (str/split x #","))]
    ["-c" "--config PATH" "EDN file to read config options from"]])
 
 (defn help-text [options-summary]
@@ -47,7 +50,7 @@ Config file options are merged over the default options, before CLI options."))
                       (edn/read-string (slurp (io/file (:config options)))))
         options (merge (cli/get-default-options cli-opts)
                        config-file
-                       options)]
+                       (dissoc options :config))]
     (cond
       errors (println (str/join "\n" errors))
       help (println (help-text summary))
