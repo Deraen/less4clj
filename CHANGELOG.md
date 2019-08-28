@@ -1,3 +1,9 @@
+## 0.7.1 (2019-08-28)
+
+**[compare](https://github.com/Deraen/less4clj/compare/0.7.0...0.7.1)**
+
+- Fix the Integrant namespace ([#30](https://github.com/Deraen/sass4clj/pull/30))
+
 ## 0.7.0 (2019-08-20)
 
 **[compare](https://github.com/Deraen/less4clj/compare/0.6.2...0.7.0)**
