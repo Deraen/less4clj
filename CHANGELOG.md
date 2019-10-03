@@ -1,3 +1,9 @@
+## 0.7.2 (2019-10-03)
+
+**[compare](https://github.com/Deraen/less4clj/compare/0.7.1...0.7.2)**
+
+- Fix CLI option defaults overriding config file options
+
 ## 0.7.1 (2019-08-28)
 
 **[compare](https://github.com/Deraen/less4clj/compare/0.7.0...0.7.1)**
