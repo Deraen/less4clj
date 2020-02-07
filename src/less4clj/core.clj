@@ -175,11 +175,11 @@
 
 (defn less-compile-to-file [path target-dir relative-path options]
   (let [input-file (io/file path)
-        output-file (io/file target-dir (string/replace relative-path #"\.main\.less$" ".css"))
-        source-map-output (io/file target-dir (string/replace relative-path #"\.main\.less$" ".css.map"))
+        output-file (io/file target-dir (string/replace relative-path #"(\.main)?\.less$" ".css"))
+        source-map-output (io/file target-dir (string/replace relative-path #"(\.main)?\.less$" ".css.map"))
         {:keys [output source-map] :as result} (less-compile input-file options)]
     (when output
       (io/make-parents output-file)
-      (spit output-file (string/replace output #"(/\*# sourceMappingURL=.*)\.main\.css\.map( \*/)" "$1.css.map$2"))
+      (spit output-file (string/replace output #"(/\*# sourceMappingURL=.*)(\.main)?\.css\.map( \*/)" "$1.css.map$2"))
       (when source-map (spit source-map-output source-map)))
     result))
