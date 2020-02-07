@@ -28,10 +28,11 @@
         output-dir (temp-dir "less4clj-output")
         options {:source-paths [input-dir include-dir]
                  :inputs ["includer.less"]
-                 :target-path output-dir}]
+                 :target-path output-dir
+                 :source-map true}]
     (spit (io/file input-dir "includer.less") includer-less)
     (spit (io/file include-dir "includee.less") includee-less)
     (less/build options)
-    (is (= "body {\n  color: red;\n}\np {\n  color: blue;\n}\n"
+    (is (= "body {\n  color: red;\n}\np {\n  color: blue;\n}\n/*# sourceMappingURL=includer.css.map */\n"
            (slurp (io/file output-dir "includer.css"))))))
 

@@ -1,3 +1,10 @@
+## 0.7.4 (2020-02-07)
+
+**[compare](https://github.com/Deraen/less4clj/compare/0.7.3...0.7.4)**
+
+- Fix source maps
+- Always remove `.main.css` part from source-map names ([#16](https://github.com/Deraen/less4clj/issues/16))
+
 ## 0.7.3 (2020-02-07)
 
 **[compare](https://github.com/Deraen/less4clj/compare/0.7.2...0.7.3)**

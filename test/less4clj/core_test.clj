@@ -1,7 +1,11 @@
 (ns less4clj.core-test
-  (:require [clojure.test :refer :all]
-            [less4clj.core :refer :all])
-  (:import [java.io File]))
+  (:require [clojure.test :refer [deftest testing is]]
+            [less4clj.core :refer [normalize-url join-url less-compile]]
+            [clojure.java.io :as io]
+            [clojure.string :as string])
+  (:import [java.io File]
+           [java.nio.file Files]
+           [java.nio.file.attribute FileAttribute]))
 
 (deftest normalize-url-test
   (is (= "foo/bar" (normalize-url "foo/./bar")))
@@ -38,14 +42,21 @@ a {
 }
 ")
 
-(def test-file (File/createTempFile "less4clj" "test.less"))
+(def test-folder (.toFile (Files/createTempDirectory "less4clj-input" (into-array FileAttribute []))))
+(def test-file (io/file test-folder "test.main.less"))
 (spit test-file less)
 
 (deftest less-compile-test
-  (is (= {:output css :source-map nil :warnings []}
-         (less-compile test-file {})))
-  (is (= {:output css :source-map nil :warnings []}
-         (less-compile less {}))))
+  (testing "Compile file"
+    (let [res (less-compile test-file {:source-map true})]
+      (is (= (str css "/*# sourceMappingURL=test.css.map */\n") (:output res)))
+      (is (= [] (:warnings res)))
+      (println (:source-map res))
+      (is (string/starts-with? (:source-map res) "{\n\"version\":3,\n\"file\":\"test.css\",\n\"lineCount\":7,\n"))))
+
+  (testing "Compile string"
+    (is (= {:output css :source-map nil :warnings []}
+           (less-compile less {})))))
 
 (deftest import-werbjars
   (is (less-compile "@import \"bootstrap/less/bootstrap.less\";" {})))

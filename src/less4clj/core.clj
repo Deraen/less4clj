@@ -7,9 +7,14 @@
            [java.net URI]
            [com.github.sommeri.less4j_javascript Less4jJavascript]
            [com.github.sommeri.less4j
-            LessCompiler LessCompiler$Configuration LessCompiler$Problem LessCompiler$Problem$Type Less4jException
-            LessSource LessSource$FileNotFound LessSource$CannotReadFile LessSource$StringSourceException]
-           [com.github.sommeri.less4j.core DefaultLessCompiler]))
+            LessCompiler$Configuration LessCompiler$Problem Less4jException
+            LessSource LessSource$FileNotFound LessSource$CannotReadFile]
+           [com.github.sommeri.less4j.core DefaultLessCompiler]
+           [com.github.sommeri.less4j.platform Constants]
+           [com.github.sommeri.less4j.utils URIUtils]
+           [com.github.sommeri.sourcemap SourceMapUrlGenerator]))
+
+(def main-ext-re #"(\.main)?\.less$")
 
 (defn find-local-file [file current-dir]
   (let [f (io/file current-dir file)]
@@ -70,8 +75,9 @@
 (defn- slurp-bytes
   "Slurp the bytes from a slurpable thing"
   [x]
-  (with-open [out (java.io.ByteArrayOutputStream.)]
-    (io/copy (io/input-stream x) out)
+  (with-open [out (java.io.ByteArrayOutputStream.)
+              in (io/input-stream x)]
+    (io/copy in out)
     (.toByteArray out)))
 
 (defn custom-less-source
@@ -101,7 +107,9 @@
     (getURI ^URI []
       uri)
     (getName ^String []
-      (let [[_ name] (re-find #"([^/]*)$" (.toString uri))]
+      ;; Return the name without .main -part, to get propert source-map names
+      (let [[_ name] (re-find #"([^/]*)$" (.toString uri))
+            name (string/replace name main-ext-re ".less")]
         name))))
 
 (defn inline-less-source
@@ -121,7 +129,7 @@
       (.getBytes source))))
 
 (defn- build-configuration ^LessCompiler$Configuration
-  [{:keys [source-map compression inline-javascript]}]
+  [{:keys [source-map compression inline-javascript] :as options}]
   (let [config (LessCompiler$Configuration.)
         source-map-config (.getSourceMapConfiguration config)]
     (when (boolean inline-javascript)
@@ -175,11 +183,11 @@
 
 (defn less-compile-to-file [path target-dir relative-path options]
   (let [input-file (io/file path)
-        output-file (io/file target-dir (string/replace relative-path #"(\.main)?\.less$" ".css"))
-        source-map-output (io/file target-dir (string/replace relative-path #"(\.main)?\.less$" ".css.map"))
+        output-file (io/file target-dir (string/replace relative-path main-ext-re ".css"))
+        source-map-output (io/file target-dir (string/replace relative-path main-ext-re ".css.map"))
         {:keys [output source-map] :as result} (less-compile input-file options)]
     (when output
       (io/make-parents output-file)
-      (spit output-file (string/replace output #"(/\*# sourceMappingURL=.*)(\.main)?\.css\.map( \*/)" "$1.css.map$2"))
+      (spit output-file output)
       (when source-map (spit source-map-output source-map)))
     result))
