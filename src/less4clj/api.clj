@@ -37,7 +37,7 @@
                 path
                 (.getPath (io/file target-path))
                 relative-path
-                (dissoc options :target-path :source-paths))
+                (dissoc options :target-path))
               (catch Exception e
                 (if auto
                   (println (.getMessage e))
@@ -73,11 +73,10 @@
 (defn build [{:keys [source-paths auto] :as options}]
   (when-not (s/valid? ::options options)
     (s/explain-out (s/explain-data ::options options)))
-  (let [options (dissoc options :source-paths)]
-    (if auto
-      (watcher/start source-paths (fn [& _]
-                                    (find-files-and-compile source-paths options)))
-      (find-files-and-compile source-paths options))))
+  (if auto
+    (watcher/start source-paths (fn [& _]
+                                  (find-files-and-compile source-paths options)))
+    (find-files-and-compile source-paths options)))
 
 (defn start [options]
   (build (assoc options :auto true)))
