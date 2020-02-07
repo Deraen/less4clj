@@ -1,3 +1,10 @@
+## 0.7.3 (2020-02-07)
+
+**[compare](https://github.com/Deraen/less4clj/compare/0.7.2...0.7.3)**
+
+- Fix `:source-paths` not being passed to compile function, so files
+from another source-paths folder couldn't be imported. ([#18](https://github.com/Deraen/less4clj/issues/18))
+
 ## 0.7.2 (2019-10-03)
 
 **[compare](https://github.com/Deraen/less4clj/compare/0.7.1...0.7.2)**

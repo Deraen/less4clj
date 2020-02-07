@@ -1,4 +1,4 @@
-(def +version+ "0.7.2")
+(def +version+ "0.7.3")
 
 (set-env!
   :resource-paths #{"src"}
@@ -6,7 +6,7 @@
   :dependencies   '[[org.clojure/clojure "1.10.1" :scope "provided"]
                     [metosin/bat-test "0.4.3" :scope "test"]
                     ;; Webjars-locator uses logging
-                    [org.slf4j/slf4j-nop "1.7.28" :scope "test"]
+                    [org.slf4j/slf4j-nop "1.7.29" :scope "test"]
 
                     [com.github.sommeri/less4j "1.17.2"]
                     [com.github.sommeri/less4j-javascript "0.0.1" :exclusions [com.github.sommeri/less4j]]
