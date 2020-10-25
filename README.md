@@ -2,8 +2,6 @@
 [![Clojars Project](https://img.shields.io/clojars/v/deraen/less4clj.svg)](https://clojars.org/deraen/less4clj)
 [![Build Status](https://travis-ci.org/Deraen/less4clj.svg?branch=master)](https://travis-ci.org/Deraen/less4clj)
 [![AppVeyor](https://img.shields.io/appveyor/ci/deraen/less4clj.svg?maxAge=2592000&label=windows)](https://ci.appveyor.com/project/Deraen/less4clj)
-[![Downloads](https://jarkeeper.com/deraen/less4clj/downloads.svg)](https://jarkeeper.com/deraen/less4clj)
-[![Dependencies Status](https://jarkeeper.com/deraen/less4clj/status.svg)](https://jarkeeper.com/deraen/less4clj)
 
 Clojure wrapper for [Less4j](https://github.com/SomMeri/less4j) Java implementation of Less compiler.
 This repository also contains [Boot](http://boot-clj.com/) and [Leiningen](http://leiningen.org/) tasks.
@@ -15,14 +13,14 @@ For parallel Sass library check [sass4clj](https://github.com/Deraen/sass4clj)
 - Load imports directly from Java classpath (e.g. [Webjars](https://www.webjars.org/))
     - Add dependency `[org.webjars.bower/bootstrap "3.3.6"]` to use [Bootstrap](http://getbootstrap.com/)
 
-## Boot [![Clojars Project](https://img.shields.io/clojars/v/deraen/boot-less.svg)](https://clojars.org/deraen/boot-less) [![Downloads](https://jarkeeper.com/deraen/boot-less/downloads.svg)](https://jarkeeper.com/deraen/boot-less)
+## Boot [![Clojars Project](https://img.shields.io/clojars/v/deraen/boot-less.svg)](https://clojars.org/deraen/boot-less)
 
 * Provides the `less` task (`deraen.boot-less/less`)
 * Select main files using `inputs` option
 * or, for each `.main.less` file in the fileset creates equivalent `.css` file.
 * Check `boot less --help` for task options.
 
-## Leiningen [![Clojars Project](https://img.shields.io/clojars/v/deraen/lein-less4clj.svg)](https://clojars.org/deraen/lein-less4clj) [![Downloads](https://jarkeeper.com/deraen/lein-less4clj/downloads.svg)](https://jarkeeper.com/deraen/lein-less4clj)
+## Leiningen [![Clojars Project](https://img.shields.io/clojars/v/deraen/lein-less4clj.svg)](https://clojars.org/deraen/lein-less4clj)
 
 * Provides the `less4clj` task
 * Select main files using `inputs` option
