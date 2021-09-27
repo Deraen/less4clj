@@ -48,6 +48,10 @@ Loading order for `@import "{name}";` on file at `{path}`
 
 ## FAQ
 
+### Shadow-cljs integration
+
+Check the example from [sass4clj](https://github.com/Deraen/sass4clj#shadow-cljs-integration), it should work with less4clj also.
+
 ### Semantic-UI theme.config
 
 Semantic-UI needs [theme.config](https://github.com/Semantic-Org/Semantic-UI/blob/master/src/theme.config.example)
@@ -55,7 +59,7 @@ file in your project. Add this file to your classpath under path `META-INF/resou
 
 ### Log configuration
 
-If you don't have any slf4j implementations you will see a warning:
+If you don't have any slf4j implementations, you will see a warning:
 
 ```
 SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
@@ -63,9 +67,9 @@ SLF4J: Defaulting to no-operation (NOP) logger implementation
 SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
 ```
 
-To disable this add a no operation logger to your project. As this is only required
-on build phase, you can use `:scope "test"` so that the dependency is not
-transitive and is not included in uberjar. Alternatively you can add this
+To disable this, add a no operation logger to your project. As this is only required
+on the build phase, you can use `:scope "test"` so that the dependency is not
+transitive and is not included in Uberjar. Alternatively, you can add this
 dependency to your Leiningen dev profile.
 
 ```
@@ -74,6 +78,6 @@ dependency to your Leiningen dev profile.
 
 ## License
 
-Copyright © 2014-2017 Juho Teperi
+Copyright © 2014-2021 Juho Teperi
 
 Distributed under the Eclipse Public License either version 1.0 or (at your option) any later version.
