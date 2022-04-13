@@ -8,6 +8,8 @@ This repository also contains [Boot](http://boot-clj.com/) and [Leiningen](http:
 
 For parallel Sass library check [sass4clj](https://github.com/Deraen/sass4clj)
 
+# ATTENTION: less4j is not maintained and only targets Less ~1.3-1.4. Consider using Less.js if you do not need to read LESS files from the Java classpath.
+
 ## Features
 
 - Load imports directly from Java classpath (e.g. [Webjars](https://www.webjars.org/))
