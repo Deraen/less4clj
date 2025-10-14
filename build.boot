@@ -103,7 +103,7 @@
 (deftask deploy []
   (comp
    (build)
-   (push :repo "clojars" :gpg-sign (not (.endsWith +version+ "-SNAPSHOT")))))
+   (push :repo "clojars" :gpg-sign false)))
 
 (ns-unmap *ns* 'test)
 
