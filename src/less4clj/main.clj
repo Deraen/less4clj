@@ -46,7 +46,7 @@ Config file options are merged over the default options, before CLI options."))
 (defn -main [& args]
   (let [{:keys [options summary errors]} (cli/parse-opts args cli-opts :no-defaults true)
         {:keys [help]} options
-        config-file (if (:config options)
+        config-file (when (:config options)
                       (edn/read-string (slurp (io/file (:config options)))))
         options (merge (cli/get-default-options cli-opts)
                        config-file

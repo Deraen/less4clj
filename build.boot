@@ -1,4 +1,4 @@
-(def +version+ "0.7.4")
+(def +version+ "0.8.0")
 
 (set-env!
   :resource-paths #{"src"}
@@ -11,7 +11,7 @@
                     [com.github.sommeri/less4j "1.17.2"]
                     [com.github.sommeri/less4j-javascript "0.0.1" :exclusions [com.github.sommeri/less4j]]
                     [org.webjars/webjars-locator "0.37"]
-                    [hawk "0.2.11"]
+                    [com.nextjournal/beholder "1.0.3"]
                     [org.clojure/tools.cli "0.4.2"]
 
                     [com.stuartsierra/component "0.4.0" :scope "test"]

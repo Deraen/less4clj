@@ -1,13 +1,11 @@
 (ns leiningen.less4clj
-  (:require [leiningen.help]
-            [leiningen.core.eval :as leval]
+  (:require [leiningen.core.eval :as leval]
             [leiningen.core.project :as project]
             [leiningen.core.main :as main]
             [leiningen.help :as help]
-            [clojure.java.io :as io]
             [leiningen.less4clj.version :refer [+version+]]))
 
-(def less4clj-profile {:dependencies [['hawk "0.2.11"]
+(def less4clj-profile {:dependencies [['com.nextjournal/beholder "1.0.3"]
                                       ['deraen/less4clj +version+]]})
 
 (defn- run-compiler

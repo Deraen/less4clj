@@ -1,3 +1,12 @@
+## 0.8.0 (2025-10-14)
+
+**[compare](https://github.com/Deraen/less4clj/compare/0.7.4...0.8.0)**
+
+- Use Beholder for change watching, should support Apple Silicon
+  - Note: will trigger re-compile only when the file content really changes,
+    not when changing the file without changes. Change event throttle was
+    also removed, as it isn't needed when only real changes trigger compile.
+
 ## 0.7.4 (2020-02-07)
 
 **[compare](https://github.com/Deraen/less4clj/compare/0.7.3...0.7.4)**

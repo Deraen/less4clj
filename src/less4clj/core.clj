@@ -18,7 +18,7 @@
 
 (defn find-local-file [file current-dir]
   (let [f (io/file current-dir file)]
-    (if (.exists f)
+    (when (.exists f)
       [(.toURI f) (.getParent f) :file])))
 
 (defn- url-parent [url]
@@ -49,7 +49,7 @@
   (normalize-url (string/join "/" parts)))
 
 (defn find-resource [url]
-  (if url
+  (when url
     (case (.getProtocol url)
       "file"
       [(.toURI url) (url-parent (.getPath url)) :resource]
@@ -61,10 +61,9 @@
         [(.toURI url) parent :resource]))))
 
 (defn find-webjars [ctx file]
-  (if-let [path (get (:asset-map ctx) file)]
-    (do
-      (util/dbug "found %s at webjars\n" path)
-      (find-resource (io/resource path)))))
+  (when-let [path (get (:asset-map ctx) file)]
+    (util/dbug "found %s at webjars\n" path)
+    (find-resource (io/resource path))))
 
 (defn- not-found! []
   (throw (LessSource$FileNotFound.)))
@@ -102,7 +101,7 @@
     (getBytes ^bytes []
       (try
         (slurp-bytes uri)
-        (catch IOException e
+        (catch IOException _e
           (cant-read!))))
     (getURI ^URI []
       uri)
